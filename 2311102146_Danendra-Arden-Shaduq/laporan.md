@@ -739,7 +739,7 @@ echo json_encode([
 
 
 ## 3. Penjelasan Implementasi 
-Tampilan Website
+Tampilan Website<br>
 **BEFORE**
 ![Tampilan](assets/before.png)
 **AFTER**

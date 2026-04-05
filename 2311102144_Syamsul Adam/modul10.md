@@ -133,7 +133,7 @@ Kode PHP ini berfungsi sebagai API Endpoint sederhana yang bertugas menyiapkan d
 ```
 ### Penjelasan code:
 
-Kode HTML ini berfungsi sebagai antarmuka pengguna (client-side) yang menggunakan Fetch API untuk melakukan permintaan data asinkron ke server tanpa memicu pemuatan ulang halaman. Saat tombol diklik, JavaScript akan mengirimkan sinyal ke data.php, memproses respons sukses dalam format JSON, lalu melakukan manipulasi DOM untuk menampilkan informasi profil secara instan ke dalam elemen <div>. Dengan adanya penanganan galat (error handling) melalui blok .catch(), kode ini memastikan bahwa pengguna tetap mendapatkan informasi meskipun terjadi kegagalan koneksi atau data tidak ditemukan, menciptakan pengalaman pengguna yang mulus dan interaktif.
+Kode HTML ini berfungsi sebagai antarmuka pengguna (client-side) yang menggunakan Fetch API untuk melakukan permintaan data asinkron ke server tanpa memicu pemuatan ulang halaman. Saat tombol diklik, JavaScript akan mengirimkan sinyal ke data.php, memproses respons sukses dalam format JSON, lalu melakukan manipulasi DOM untuk menampilkan informasi profil secara instan ke dalam elemen div. Dengan adanya penanganan galat (error handling) melalui blok .catch(), kode ini memastikan bahwa pengguna tetap mendapatkan informasi meskipun terjadi kegagalan koneksi atau data tidak ditemukan, menciptakan pengalaman pengguna yang mulus dan interaktif.
 
 ### Hasil Tampilan (Screenshot)
 

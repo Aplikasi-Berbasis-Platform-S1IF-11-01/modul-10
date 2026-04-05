@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas Modul 10 - Ajax</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #f0faf5;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 24px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 700px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 800;
+            color: #1f2937;
+            margin-bottom: 6px;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #9ca3af;
+            margin-bottom: 28px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #0f9b72, #00c9a7);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 700;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        button:hover { opacity: 0.85; }
+
+        #hasil-profil {
+            margin-top: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .profil-card {
+            background: #f0faf5;
+            border: 1px solid #d1fae5;
+            border-radius: 12px;
+            padding: 18px 22px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .profil-card .nama {
+            font-size: 16px;
+            font-weight: 700;
+            color: #065f46;
+            margin-bottom: 6px;
+        }
+
+        .profil-card .detail {
+            font-size: 14px;
+            color: #374151;
+        }
+
+        .profil-card .detail span {
+            color: #0f9b72;
+            font-weight: 600;
+        }
+
+        .loading {
+            text-align: center;
+            color: #9ca3af;
+            font-size: 14px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📋 Data Profil</h1>
+    <p class="subtitle">Tugas Modul 10 · Ajax · Praktikum ABP</p>
+
+    <button onclick="tampilkanProfil()">Tampilkan Profil</button>
+
+    <div id="hasil-profil"></div>
+</div>
+
+<script>
+    function tampilkanProfil() {
+        const hasil = document.getElementById('hasil-profil');
+        hasil.innerHTML = '<p class="loading">Mengambil data...</p>';
+
+        fetch('data.php')
+            .then(response => response.json())
+            .then(data => {
+                hasil.innerHTML = '';
+                data.forEach(profil => {
+                    hasil.innerHTML += `
+                        <div class="profil-card">
+                            <div class="nama">${profil.nama}</div>
+                            <div class="detail">
+                                <span>Pekerjaan:</span> ${profil.pekerjaan} &nbsp;|&nbsp;
+                                <span>Lokasi:</span> ${profil.lokasi}
+                            </div>
+                        </div>
+                    `;
+                });
+            })
+            .catch(error => {
+                hasil.innerHTML = '<p class="loading">Gagal mengambil data 😢</p>';
+            });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas Modul 10 - AJAX (2311102138 - RICO ADE PRATAMA)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: #ffffff;
+            width: 100%;
+            max-width: 800px;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .header h2 {
+            color: #1a73e8;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 24px;
+        }
+
+        .header p {
+            color: #6c757d;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .student-badge {
+            display: inline-block;
+            background-color: #e8f0fe;
+            color: #1a73e8;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            letter-spacing: 0.5px;
+            border: 1px solid #d2e3fc;
+        }
+
+        button {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 15px;
+            font-weight: 500;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(26, 115, 232, 0.2);
+        }
+
+        button:hover {
+            background-color: #1557b0;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(26, 115, 232, 0.3);
+        }
+
+        #hasil-profil {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            display: none;
+        }
+
+        .profil-card {
+            background: #f8f9fa;
+            border-left: 5px solid #1a73e8;
+            padding: 16px 20px;
+            border-radius: 8px;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            animation: fadeIn 0.4s ease-out forwards;
+            opacity: 0;
+            transition: background-color 0.2s;
+        }
+
+        .profil-card:hover {
+            background-color: #f1f5f9;
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1a73e8, #4285f4);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 600;
+            font-size: 18px;
+            flex-shrink: 0;
+            box-shadow: 0 3px 8px rgba(26, 115, 232, 0.3);
+        }
+
+        .profil-info {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            width: 100%;
+        }
+
+        .profil-nama {
+            font-size: 14px;
+            color: #495057;
+        }
+
+        .profil-nama span {
+            color: #1a73e8;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .profil-meta {
+            display: grid;
+            grid-template-columns: 260px auto 1fr;
+            gap: 15px;
+            font-size: 13px;
+            color: #6c757d;
+            align-items: center;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .meta-item span.label {
+            display: none;
+        }
+
+        .meta-item span.value {
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .meta-divider {
+            color: #ced4da;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profil-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .profil-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .profil-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .profil-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .profil-card:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h2>Direktori Profil</h2>
+            <p>Data diambil dari server tanpa reload (AJAX)</p>
+        </div>
+        <button id="btn-tampil">Tampilkan Profil</button>
+        <div id="hasil-profil"></div>
+    </div>
+    <script>
+        const btn = document.getElementById('btn-tampil');
+        const hasil = document.getElementById('hasil-profil');
+        const svgTas = `<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" height="15" width="15" style="flex-shrink:0;"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>`;
+        const svgLokasi = `<svg stroke="currentColor" fill="none" stroke-width="2" viewBox="0 0 24 24" height="15" width="15" style="flex-shrink:0;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>`;
+        function getInitials(name) {
+            let words = name.trim().split(' ');
+            if (words.length > 1) {
+                return (words[0][0] + words[1][0]).toUpperCase();
+            }
+            return name.substring(0, 2).toUpperCase();
+        }
+        btn.addEventListener('click', function () {
+            const originalText = btn.innerText;
+            btn.innerText = "Memuat data...";
+            fetch('data.php')
+                .then(response => response.json())
+                .then(data => {
+                    btn.innerText = originalText;
+                    hasil.style.display = 'flex';
+                    hasil.innerHTML = "";
+                    data.forEach(profil => {
+                        const inisial = getInitials(profil.nama);
+                        const card = document.createElement('div');
+                        card.className = 'profil-card';
+                        card.innerHTML = `
+                            <div class="avatar">${inisial}</div>
+                            <div class="profil-info">
+                                <div class="profil-nama">Nama: <span>${profil.nama}</span></div>
+                                <div class="profil-meta">
+                                    <div class="meta-item">
+                                        ${svgTas} 
+                                        <span class="label">Pekerjaan: </span>
+                                        <span class="value">${profil.pekerjaan}</span>
+                                    </div>
+                                    <div class="meta-divider">|</div>
+                                    <div class="meta-item">
+                                        ${svgLokasi} 
+                                        <span class="label">Lokasi: </span>
+                                        <span class="value">${profil.lokasi}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        hasil.appendChild(card);
+                    });
+                })
+                .catch(error => {
+                    btn.innerText = originalText;
+                    alert("Terjadi kesalahan saat mengambil data!");
+                    console.error(error);
+                });
+        });
+    </script>
+</body>
+
+</html>

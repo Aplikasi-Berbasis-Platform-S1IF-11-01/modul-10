@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ambil Data JSON</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        #hasil-profil { 
+            margin-top: 15px; 
+            padding: 10px; 
+            border: 1px solid #ddd; 
+            display: inline-block;
+            min-width: 200px;
+        }
+        button { cursor: pointer; padding: 8px 16px; }
+    </style>
+</head>
+<body>
+
+    <h2>Profil Pengguna</h2>
+    <button id="btn-tampil">Tampilkan Profil</button>
+
+    <div id="hasil-profil">Data akan muncul di sini...</div>
+
+    <script>
+        document.getElementById('btn-tampil').addEventListener('click', function() {
+            // Mengambil data dari data.php
+            fetch('data.php')
+                .then(response => {
+                    // Cek apakah request berhasil
+                    if (!response.ok) {
+                        throw new Error('Gagal mengambil data');
+                    }
+                    return response.json(); // Mengubah response menjadi objek JS
+                })
+                .then(data => {
+                    // Menampilkan data ke dalam elemen HTML
+                    const wadah = document.getElementById('hasil-profil');
+                    wadah.innerHTML = `Nama: ${data.nama} | Pekerjaan: ${data.pekerjaan} | Lokasi: ${data.lokasi}`;
+                })
+                .catch(error => {
+                    console.error('Terjadi kesalahan:', error);
+                    document.getElementById('hasil-profil').innerText = "Gagal memuat data.";
+                });
+        });
+    </script>
+
+</body>
+</html>

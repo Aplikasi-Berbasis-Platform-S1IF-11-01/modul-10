@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Modul 10 – AJAX Profil - 2311102034</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0f14;
+      --surface: #14171f;
+      --card: #1b1f2b;
+      --accent: #f5c842;
+      --accent2: #e07b39;
+      --text: #e8eaf0;
+      --muted: #6b7280;
+      --border: #2a2f3d;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      overflow-x: hidden;
+    }
+
+    /* Noise texture overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 680px;
+    }
+
+    /* Header */
+    .header {
+      margin-bottom: 2.5rem;
+      text-align: center;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(245,200,66,0.12);
+      color: var(--accent);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(245,200,66,0.25);
+      margin-bottom: 1rem;
+    }
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+    h1 span {
+      color: var(--accent);
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-top: 0.6rem;
+    }
+
+    /* Button */
+    .btn-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    #btn-tampilkan {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      background: var(--accent);
+      color: #0d0f14;
+      border: none;
+      padding: 0.85rem 2.2rem;
+      border-radius: 12px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: 0 4px 20px rgba(245,200,66,0.25);
+    }
+    #btn-tampilkan::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+      border-radius: inherit;
+    }
+    #btn-tampilkan:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(245,200,66,0.38);
+    }
+    #btn-tampilkan:active {
+      transform: translateY(0);
+    }
+    #btn-tampilkan.loading {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    /* Result area */
+    #hasil-profil {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    /* Skeleton */
+    .skeleton {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.4rem 1.6rem;
+      animation: shimmer 1.4s infinite;
+    }
+    .skeleton-line {
+      height: 14px;
+      background: linear-gradient(90deg, var(--border) 25%, #2f3545 50%, var(--border) 75%);
+      background-size: 200% 100%;
+      animation: shimmer-slide 1.4s infinite;
+      border-radius: 6px;
+      margin-bottom: 0.7rem;
+    }
+    .skeleton-line:last-child { margin-bottom: 0; width: 60%; }
+    @keyframes shimmer-slide {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Profile card */
+    .profil-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.4rem 1.6rem;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      opacity: 0;
+      transform: translateY(12px);
+      animation: fadeUp 0.4s ease forwards;
+    }
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: #0d0f14;
+      flex-shrink: 0;
+    }
+
+    .info { flex: 1; }
+    .nama {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: 0.3rem;
+    }
+    .detail {
+      font-size: 0.85rem;
+      color: var(--muted);
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+    .detail span {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: inline-block;
+    }
+
+    /* Error */
+    .error-box {
+      background: rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.3);
+      border-radius: 12px;
+      padding: 1rem 1.4rem;
+      color: #fca5a5;
+      font-size: 0.9rem;
+    }
+
+    /* Status bar */
+    .status-bar {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 1.8rem;
+      letter-spacing: 0.04em;
+    }
+    .status-bar span { color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="header">
+      <div class="badge">Modul 10 · AJAX - 2311102034</div>
+      <h1>Data <span>Profil</span><br/>via AJAX</h1>
+      <p class="subtitle">Mengambil data dari server tanpa reload halaman</p>
+    </div>
+
+    <div class="btn-wrap">
+      <button id="btn-tampilkan">&#9654; Tampilkan Profil</button>
+    </div>
+
+    <div id="hasil-profil"></div>
+
+    <p class="status-bar" id="status-bar">Belum ada data &mdash; klik tombol di atas</p>
+  </div>
+
+  <script>
+    const btn = document.getElementById('btn-tampilkan');
+    const hasil = document.getElementById('hasil-profil');
+    const statusBar = document.getElementById('status-bar');
+
+    btn.addEventListener('click', function () {
+      // Tampilkan skeleton loading
+      btn.classList.add('loading');
+      btn.textContent = '⟳ Memuat...';
+      hasil.innerHTML = `
+        <div class="skeleton"><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line"></div></div>
+        <div class="skeleton"><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line"></div></div>
+        <div class="skeleton"><div class="skeleton-line"></div><div class="skeleton-line"></div><div class="skeleton-line"></div></div>
+      `;
+      statusBar.innerHTML = 'Mengambil data dari <span>data.php</span>…';
+
+      // Fetch ke data.php
+      fetch('data.php')
+        .then(function (response) {
+          if (!response.ok) throw new Error('HTTP error: ' + response.status);
+          return response.json();
+        })
+        .then(function (data) {
+          hasil.innerHTML = '';
+
+          data.forEach(function (profil, index) {
+            const inisial = profil.nama.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+            const card = document.createElement('div');
+            card.className = 'profil-card';
+            card.style.animationDelay = (index * 0.1) + 's';
+            card.innerHTML = `
+              <div class="avatar">${inisial}</div>
+              <div class="info">
+                <div class="nama">${profil.nama}</div>
+                <div class="detail">
+                  <span><span class="dot"></span>${profil.pekerjaan}</span>
+                  <span><span class="dot"></span>${profil.lokasi}</span>
+                </div>
+              </div>
+            `;
+            hasil.appendChild(card);
+          });
+
+          statusBar.innerHTML = '<span>' + data.length + ' data</span> berhasil dimuat dari server';
+          btn.textContent = '↺ Muat Ulang';
+          btn.classList.remove('loading');
+        })
+        .catch(function (err) {
+          hasil.innerHTML = `<div class="error-box">⚠ Gagal mengambil data: <strong>${err.message}</strong><br/><small>Pastikan file data.php ada di server dan server PHP sudah berjalan.</small></div>`;
+          statusBar.innerHTML = 'Terjadi <span>kesalahan</span> saat fetch';
+          btn.textContent = '↺ Coba Lagi';
+          btn.classList.remove('loading');
+        });
+    });
+  </script>
+</body>
+</html>

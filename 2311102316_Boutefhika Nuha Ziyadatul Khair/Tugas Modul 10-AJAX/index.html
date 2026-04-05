@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AJAX Profil</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background-color: #f4f6f9;
+            text-align: center;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #92d2fd;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #a7d4ff;
+        }
+
+        #hasil-profil {
+            margin-top: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 15px;
+            margin: 10px auto;
+            width: 300px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Data Profil</h2>
+
+<button onclick="tampilProfil()">Tampilkan Profil</button>
+
+<div id="hasil-profil"></div>
+
+<script>
+function tampilProfil() {
+    fetch('data.php')
+        .then(response => response.json())
+        .then(data => {
+            let output = "";
+
+            data.forEach(item => {
+                output += `
+                    <div class="card">
+                        <b>Nama :</b> ${item.nama} <br>
+                        <b>Pekerjaan :</b> ${item.pekerjaan} <br>
+                        <b>Lokasi :</b> ${item.lokasi}
+                    </div>
+                `;
+            });
+
+            document.getElementById("hasil-profil").innerHTML = output;
+        })
+        .catch(error => {
+            console.log(error);
+        });
+}
+</script>
+
+</body>
+</html>

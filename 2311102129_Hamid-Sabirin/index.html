@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Data Karyawan</title>
+    <!-- Import Google Font Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            /* Background gradien warna cerah dipindah ke background halaman utama */
+            background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            background-attachment: fixed;
+            /* Agar background tidak ikut scroll / putus */
+            color: #333;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            /* Sisakan sedikit padding luar agar tidak menempel banget ke ujung monitor */
+        }
+
+        .container {
+            width: 100%;
+            /* Lebar layar penuh */
+            /* max-width dihapus agar tidak terkurung di tengah */
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.95);
+            /* Efek tembus pandang sedikit transparan */
+            padding: 40px 5%;
+            /* Padding relatif (5%) ke samping */
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            min-height: 95vh;
+        }
+
+        h2.title {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 35px;
+            position: relative;
+        }
+
+        /* Garis cantik di bawah judul */
+        h2.title::after {
+            content: '';
+            width: 80px;
+            height: 5px;
+            background: linear-gradient(90deg, #ff0844, #ffb199);
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 5px;
+        }
+
+        /* Box Profil yang Modern & Berwarna */
+        .profil-acak {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 18px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            transition: transform 0.3s ease;
+        }
+
+        .profil-acak:hover {
+            transform: translateY(-5px);
+        }
+
+        .profil-acak strong {
+            display: inline-block;
+            margin-bottom: 12px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #d1d8ff;
+        }
+
+        .profil-acak p {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Label pekerjaan/lokasi di Box Atas */
+        .profil-acak span.badge {
+            background-color: rgba(255, 255, 255, 0.25);
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 600;
+            margin: 5px;
+            display: inline-block;
+            backdrop-filter: blur(5px);
+        }
+
+        .btn-container {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        button {
+            padding: 15px 35px;
+            background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            /* Bentuk bulat seperti pil */
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(255, 8, 68, 0.4);
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+
+        button:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 12px 30px rgba(255, 8, 68, 0.5);
+        }
+
+        button:active {
+            transform: translateY(2px);
+        }
+
+        h3.subtitle {
+            text-align: left;
+            font-size: 22px;
+            color: #34495e;
+            margin-bottom: 20px;
+            padding-left: 10px;
+            border-left: 6px solid #667eea;
+            font-weight: 700;
+        }
+
+        /* Tabel Modern */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+            /* Supaya lekukan sudut atasnya nggak keluar */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+        }
+
+        th,
+        td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid #edf2f7;
+        }
+
+        th {
+            background-color: #f7fafc;
+            color: #4a5568;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 1px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        /* Animasi transisi kecil saat baris tabel disentuh mouse */
+        tbody tr {
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background-color: #f8fbff;
+            /* Efek sedikit menonjol */
+            transform: scale(1.005);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+            border-radius: 8px;
+            /* Trik agar hover terlihat melengkung dikit */
+        }
+
+        /* Tambahan Badge pada kolom tabel agar manis */
+        td span.info-badge {
+            background-color: #ebf4ff;
+            color: #3182ce;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        td span.lokasi-badge {
+            background-color: #f0fff4;
+            color: #38a169;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        /* Responsivitas untuk layar kecil */
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px 15px;
+            }
+
+            .profil-acak p {
+                font-size: 22px;
+            }
+
+            th,
+            td {
+                padding: 12px 10px;
+                font-size: 14px;
+            }
+
+            button {
+                padding: 12px 25px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2 class="title">KARYAWAN PERUSAHAAN<br> 2311102129-HAMID SABIRIN</h2>
+
+        <!-- Box Atas: Menampilkan 1 orang secara acak -->
+        <div id="profil-acak-container" class="profil-acak">
+            <p style="font-size: 18px; color: rgba(255,255,255,0.8);">Sedang memuat sistem AJAX...</p>
+        </div>
+
+        <!-- Tombol untuk ganti profil secara animasi -->
+        <div class="btn-container">
+            <button id="btn-reload">🔄 Kocok & Tampilkan Ulang</button>
+        </div>
+
+        <!-- Bagian bawah: Tabel penampilan semua data -->
+        <h3 class="subtitle">Seluruh Pegawai Aktif</h3>
+        <table id="tabel-pegawai">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Pegawai</th>
+                    <th>Profesi</th>
+                    <th>Wilayah Kerja</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="baris-loading">
+                    <td colspan="4" style="text-align: center; padding: 40px; color: #a0aec0;">
+                        Memuat data...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // 1. Tangkap Elemen DOM (HTML)
+            const btnReload = document.getElementById('btn-reload');
+            const profilAcakContainer = document.getElementById('profil-acak-container');
+            const tbodyTabel = document.querySelector('#tabel-pegawai tbody');
+
+            let semuaDataKaryawan = [];
+
+            // 2. Fungsi Utama: Mengambil data lewat API AJAX
+            function requestDataDariServer() { // Gunakan fetch dengan loading state
+                btnReload.innerText = 'Mengambil...';
+                btnReload.disabled = true;
+
+                fetch('data.php')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Gagal menghubungi File Backend (PHP)');
+                        }
+                        return response.json();
+                    })
+                    .then(dataArray => {
+                        semuaDataKaryawan = dataArray; 
+                        
+                        // Panggil dua fungsi render
+                        renderTabel(semuaDataKaryawan);
+                        acakTampilkanSatuProfil();
+                    })
+                    .catch(error => {
+                        profilAcakContainer.innerHTML = `<p style="color: #fed7d7;">Terjadi Kesalahan: ${error.message}</p>`;
+                        tbodyTabel.innerHTML = `<tr><td colspan="4" style="color:#e53e3e; text-align:center; padding: 30px;"><b>Gagal muat tabel.</b> Pastikan dijalankan dari localhost PHP.</td></tr>`;
+                    })
+                    .finally(() => {
+                        // Kembalikan nama tombol
+                        btnReload.innerText = '🔄 Kocok & Tampilkan Ulang';
+                        btnReload.disabled = false;
+                    });
+            }
+
+            // 3. Fungsi membuat deretan HTML Tabel secara dinamis
+            function renderTabel(dataList) {
+                tbodyTabel.innerHTML = ''; // Hapus teks loading
+                
+                dataList.forEach((orang, index) => {
+                    const tr = document.createElement('tr'); 
+                    // Sisipkan styling badge modern untuk sel Pekerjaan dan Lokasi
+                    tr.innerHTML = `
+                        <td style="font-weight: 600; color: #718096;">${index + 1}</td>
+                        <td style="font-weight: 600; color: #2d3748;">${orang.nama}</td>
+                        <td><span class="info-badge">${orang.pekerjaan}</span></td>
+                        <td><span class="lokasi-badge">${orang.lokasi}</span></td>
+                    `;
+                    tbodyTabel.appendChild(tr); 
+                });
+            }
+
+            // 4. Fungsi Mengacak Array untuk Highlight atas
+            function acakTampilkanSatuProfil() {
+                if(semuaDataKaryawan.length === 0) return;
+
+                // Ambil elemen acak 0 - 9
+                const angkaAcak = Math.floor(Math.random() * semuaDataKaryawan.length);
+                const orangTerpilih = semuaDataKaryawan[angkaAcak];
+
+                // Efek transisi simpel memudarkan dulu
+                profilAcakContainer.style.opacity = '0.5';
+                
+                setTimeout(() => {
+                    // Render HTML dengan desain tag yang cakep
+                    profilAcakContainer.innerHTML = `
+                        <strong>✨ Spesial Highlight ✨</strong>
+                        <p>${orangTerpilih.nama}</p>
+                        <div>
+                            <span class="badge">💼 ${orangTerpilih.pekerjaan}</span>
+                            <span class="badge">📍 ${orangTerpilih.lokasi}</span>
+                        </div>
+                    `;
+                    // Kembalikan intensitas cahaya / opacity untuk meniru animasi fade
+                    profilAcakContainer.style.opacity = '1';
+                }, 150); // jeda 150ms agar animasi transisi terasa
+            }
+
+            // 5. Sambungan Event
+            btnReload.addEventListener('click', () => {
+                // Melakukan Fetch ke server lagi
+                requestDataDariServer();
+            });
+
+            // 6. Jalankan Pertama Kali Langsung
+            requestDataDariServer();
+
+        });
+    </script>
+</body>
+
+</html>

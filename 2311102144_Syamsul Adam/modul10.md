@@ -74,9 +74,9 @@ echo json_encode($data);
 ?>
 ```
 ### Penjelasan Kode:
-```
+
 Kode PHP ini berfungsi sebagai API Endpoint sederhana yang bertugas menyiapkan dan mengirimkan data dari server ke sisi klien dalam format JSON. Melalui instruksi header('Content-Type: application/json'), server memberi tahu browser bahwa informasi yang dikirimkan adalah data terstruktur, bukan halaman HTML biasa, sementara fungsi json_encode() berperan mengonversi array PHP berisi profil Anda sebagai IT Network Specialist menjadi format string yang ringan dan universal. Proses ini memungkinkan pertukaran data yang efisien dan cepat, sehingga aplikasi sisi klien (seperti JavaScript) dapat menangkap dan mengolah informasi tersebut secara instan tanpa perlu memuat ulang seluruh halaman web.
-```
+
 
 ### Kode PHP
 ```html
@@ -132,9 +132,9 @@ Kode PHP ini berfungsi sebagai API Endpoint sederhana yang bertugas menyiapkan d
 </html>
 ```
 ### Penjelasan code:
-```
+
 Kode HTML ini berfungsi sebagai antarmuka pengguna (client-side) yang menggunakan Fetch API untuk melakukan permintaan data asinkron ke server tanpa memicu pemuatan ulang halaman. Saat tombol diklik, JavaScript akan mengirimkan sinyal ke data.php, memproses respons sukses dalam format JSON, lalu melakukan manipulasi DOM untuk menampilkan informasi profil secara instan ke dalam elemen <div>. Dengan adanya penanganan galat (error handling) melalui blok .catch(), kode ini memastikan bahwa pengguna tetap mendapatkan informasi meskipun terjadi kegagalan koneksi atau data tidak ditemukan, menciptakan pengalaman pengguna yang mulus dan interaktif.
-```
+
 ### Hasil Tampilan (Screenshot)
 
 <img src="image.png" alt="ss" width="300">

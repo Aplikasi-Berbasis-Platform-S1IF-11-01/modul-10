@@ -61,7 +61,7 @@ Secara umum, AJAX melibatkan dua hal yakni:
 ## 1.2 Cara Kerja AJAX 
 
 <p align="center">
-  <img src="images/gambar1.png" width="400"><br>
+  <img src="Images/gambar1.png" width="400"><br>
   <b>Gambar 1.2 Cara Kerja AJAX</b>
 </p>
 
@@ -79,11 +79,11 @@ Pada contoh berikut, akan dilakukan perubahan halaman web menggunakan teknik AJA
 1. Pastikan PHP web server sudah berjalan dengan baik. Pada modul ini digunakan Apache web server
 yang terdapat pada XAMPP v3.2.2. 
 
-![Gambar2](Images/gambar2.png)
+  ![Gambar2](Images/gambar2.png)
 
 2. Akses folder htdocs pada local server, dan kemudian buat folder baru dengan nama seperti: ajax
 
-![Gambar3](Images/gambar3.png)
+  ![Gambar3](Images/gambar3.png)
 
 3. Buat file .txt berikut yang berfungsi sebagai pengganti konten halaman web. 
 ```
@@ -120,17 +120,17 @@ Simpan file sebagai ajax_info.txt.
 5. Tempatkan kedua file tersebut kedalam folder ajax yang telah dibuat pada langkah kedua sehingga 
 posisi kedua file seperti berikut. 
 
-![Gambar4](Images/gambar4.png)
+  ![Gambar4](Images/gambar4.png)
 
 6. Ketika anda mengakses halaman web tersebut pada alamat http://localhost/ajax/, tampilan yang 
 akan muncul adalah seperti gambar dibawah. 
 
-![Gambar5](Images/gambar5.png)
+  ![Gambar5](Images/gambar5.png)
 
 7. Namun jika anda melakukan action yaitu menekan button Change Content, maka konten pada 
 halaman web akan menjadi seperti ini. 
 
-![Gambar6](Images/gambar6.png)
+  ![Gambar6](Images/gambar6.png)
 
 Berikut adalah penjelesannya: 
 1. Peran terbesar AJAX pada kode di bawah ini adalah melakukan request ke server dan mengubah 
@@ -376,7 +376,7 @@ function tampilProfil() {
 Output:
 ![Gambar7](images/gambar7.png)
 
-![Gambar7](images/gambar8.png)
+![Gambar8](images/gambar8.png)
 
 Deskripsi:
 Program ini merupakan implementasi AJAX menggunakan jQuery untuk mengambil data dari server dan menampilkannya secara dinamis ke halaman web tanpa melakukan reload. Program bekerja dengan menampilkan sebuah tombol yang ketika diklik akan mengirim request ke server menggunakan metode AJAX.

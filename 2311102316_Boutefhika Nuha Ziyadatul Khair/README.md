@@ -79,11 +79,15 @@ Pada contoh berikut, akan dilakukan perubahan halaman web menggunakan teknik AJA
 1. Pastikan PHP web server sudah berjalan dengan baik. Pada modul ini digunakan Apache web server
 yang terdapat pada XAMPP v3.2.2. 
 
-  ![Gambar2](Images/gambar2.png)
+<p align="center">
+  <img src="Images/gambar2.png" width="400"><br>
+</p>
 
 2. Akses folder htdocs pada local server, dan kemudian buat folder baru dengan nama seperti: ajax
 
-  ![Gambar3](Images/gambar3.png)
+<p align="center">
+  <img src="Images/gambar3.png" width="400"><br>
+</p>
 
 3. Buat file .txt berikut yang berfungsi sebagai pengganti konten halaman web. 
 ```
@@ -120,17 +124,23 @@ Simpan file sebagai ajax_info.txt.
 5. Tempatkan kedua file tersebut kedalam folder ajax yang telah dibuat pada langkah kedua sehingga 
 posisi kedua file seperti berikut. 
 
-  ![Gambar4](Images/gambar4.png)
+<p align="center">
+  <img src="Images/gambar4.png" width="400"><br>
+</p>
 
 6. Ketika anda mengakses halaman web tersebut pada alamat http://localhost/ajax/, tampilan yang 
 akan muncul adalah seperti gambar dibawah. 
 
-  ![Gambar5](Images/gambar5.png)
+<p align="center">
+  <img src="Images/gambar5.png" width="400"><br>
+</p>
 
 7. Namun jika anda melakukan action yaitu menekan button Change Content, maka konten pada 
 halaman web akan menjadi seperti ini. 
 
-  ![Gambar6](Images/gambar6.png)
+<p align="center">
+  <img src="Images/gambar6.png" width="400"><br>
+</p>
 
 Berikut adalah penjelesannya: 
 1. Peran terbesar AJAX pada kode di bawah ini adalah melakukan request ke server dan mengubah 
@@ -171,8 +181,8 @@ Dimana:
 mengupdate isi dari elemen dengan id="demo". 
 
 ## 1.4 Implementasi AJAX dengan JQuery
-AJAX dengan jQuery dapat diimplementasikan menggunakan metode $.ajax() yang menyediakan kontrol detail dalam melakukan request. Metode ini sangat berguna ketika kita membutuhkan penanganan yang lebih spesifik terhadap response dari server atau ingin menambahkan konfigurasi tambahan pada request AJAX.
-Berikut adalah contoh implementasi AJAX menggunakan metode $.ajax():
+AJAX dengan jQuery dapat diimplementasikan menggunakan metode `$.ajax()` yang menyediakan kontrol detail dalam melakukan request. Metode ini sangat berguna ketika kita membutuhkan penanganan yang lebih spesifik terhadap response dari server atau ingin menambahkan konfigurasi tambahan pada request AJAX.
+Berikut adalah contoh implementasi AJAX menggunakan metode `$.ajax()`:
 ```
 <!doctype html>
 <html>

@@ -739,10 +739,10 @@ echo json_encode([
 
 
 ## 3. Penjelasan Implementasi 
-Pada tugas ini, sistem dibangun dengan konsep client-server sederhana yang terdiri dari dua file utama yaitu data.php sebagai server dan index.html sebagai client. Keduanya saling terhubung menggunakan teknologi AJAX dengan bantuan Fetch API.
-
 Tampilan Website
+**BEFORE**
 ![Tampilan](assets/before.png)
+**AFTER**
 ![Tampilan](assets/after.png)
 
 Berikut adalah penjelasan cara kerja program tersebut, disusun menyerupai format dan gaya bahasa dari contoh yang Anda berikan:

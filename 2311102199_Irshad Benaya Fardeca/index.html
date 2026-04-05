@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul 10</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: sans-serif;
+            background: #c2c1c1;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .wrap {
+            width: 100%;
+            max-width: 380px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            color: #1a1a1a;
+        }
+
+        button {
+            display: block;
+            margin: 0 auto;
+            padding: 8px 20px;
+            font-size: 0.9rem;
+            background: #a4a3a3;
+            border: 1px solid #e0e0dd;
+            border-radius: 8px;
+            color: #1a1a1a;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #f0f0ee;
+        }
+
+        #hasil-profil {
+            margin-top: 1.25rem;
+        }
+
+        .profil-card {
+            background: #fff;
+            border: 1px solid #e5e5e2;
+            border-radius: 10px;
+            padding: 16px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .profil-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        .profil-label {
+            color: #888;
+        }
+
+        .profil-value {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <h1>Profil</h1>
+        <button onclick="dataProfil()">Tampilkan Profil</button>
+        <div id="hasil-profil"></div>
+    </div>
+
+    <script>
+        function dataProfil() {
+            fetch('data.php')
+                .then(response => response.json())
+                .then(data => {
+                    let output = `
+                        <div class="profil-card">
+                            <div class="profil-row">
+                                <span class="profil-label">Nama</span>
+                                <span class="profil-value">${data.nama}</span>
+                            </div>
+                            <div class="profil-row">
+                                <span class="profil-label">NIM</span>
+                                <span class="profil-value">${data.nim}</span>
+                            </div>
+                            <div class="profil-row">
+                                <span class="profil-label">Kelas</span>
+                                <span class="profil-value">${data.kelas}</span>
+                            </div>
+                        </div>
+                    `;
+                    document.getElementById("hasil-profil").innerHTML = output;
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                });
+        }
+    </script>
+</body>
+
+</html>

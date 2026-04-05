@@ -147,8 +147,6 @@ Berikut adalah lampiran UI / *screenshot* dari Aplikasi Data Pegawai AJAX yang b
 
 ## 5. Referensi Web
 
-Laporan praktikum ini disusun mempertimbangkan standar implementasi dan rujukan langsung pada platform-platform ensiklopedia teknologi di bawah:
-
 - **MDN Web Docs - Fetch API (AJAX Asinkron)**: [https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
 - **PHP Documentation - *json_encode***: [https://www.php.net/manual/en/function.json-encode.php](https://www.php.net/manual/en/function.json-encode.php)
 - **MDN Web Docs - Basic DOM Manipulation**: [https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Manipulating_documents](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Manipulating_documents)

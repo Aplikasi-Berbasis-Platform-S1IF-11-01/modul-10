@@ -71,6 +71,7 @@ header('Content-Type: application/json');
 Buat tombol dengan teks "Tampilkan Profil".
 Siapkan tempat untuk menampilkan data, misalnya:
 <div id="hasil-profil"></div>
+
 3. *Membuat Logika AJAX (JavaScript)*
 Tambahkan event ketika tombol diklik.
 Gunakan fetch() (atau boleh pakai XMLHttpRequest / jQuery AJAX) untuk mengambil data dari data.php.

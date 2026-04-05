@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Halaman AJAX Profil - Modul 10 - Qonita Rahayu Atmi">
+    <title>AJAX Profil | Modul 10</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div style="max-width:860px; margin:0 auto;">
+
+    <!-- Hero -->
+    <div class="hero">
+        <div class="badge">Modul 10 &mdash; AJAX</div>
+        <h1>Data Profil via AJAX</h1>
+        <p>2311102128 &bull; Qonita Rahayu Atmi &bull; S1 IF-11-REG01</p>
+    </div>
+
+    <!-- Panel Kontrol -->
+    <div class="control-panel">
+        <p>Klik tombol di bawah untuk mengambil data dari server (<code>data.php</code>) menggunakan AJAX tanpa reload halaman.</p>
+        <button id="btn-tampilkan">
+            <span class="icon">&#9654;</span> Tampilkan Profil
+        </button>
+    </div>
+
+    <!-- Status Loading -->
+    <div id="status-ajax">
+        <div class="spinner"></div>
+        <span>Mengambil data dari server...</span>
+    </div>
+
+    <!-- Section Title -->
+    <p class="section-title" id="section-label" style="display:none;">Hasil Data dari Server</p>
+
+    <div id="hasil-profil">
+        <!-- State kosong awal -->
+        <div class="state-empty">
+            <span class="icon">&#128100;</span>
+            Data belum dimuat. Klik tombol <strong>"Tampilkan Profil"</strong> untuk mengambil data dari server.
+        </div>
+    </div>
+
+    <!-- Info Request AJAX -->
+    <div class="ajax-info" id="ajax-info">
+        <span class="label">&#9432; Info AJAX:</span>
+        Request dikirim ke <code>data.php</code> &bull;
+        Method: <code>GET</code> &bull;
+        Format: <code>application/json</code> &bull;
+        Status: <span id="ajax-status-text" style="color:#4ade80; font-weight:600;"></span>
+    </div>
+
+    <footer>
+        <p>Dibuat oleh <span>Qonita Rahayu Atmi</span> &mdash; NIM <span>2311102128</span> &mdash; Modul 10 AJAX</p>
+        <p style="margin-top:.3rem;">Aplikasi Berbasis Platform &bull; Telkom University Purwokerto &bull; 2026</p>
+    </footer>
+
+</div>
+
+<script>
+// ============================================================
+// JavaScript AJAX menggunakan fetch()
+// 2311102128 - Qonita Rahayu Atmi
+// ============================================================
+
+const btnTampilkan  = document.getElementById('btn-tampilkan');
+const hasilProfil   = document.getElementById('hasil-profil');
+const statusAjax    = document.getElementById('status-ajax');
+const ajaxInfo      = document.getElementById('ajax-info');
+const ajaxStatusTxt = document.getElementById('ajax-status-text');
+const sectionLabel  = document.getElementById('section-label');
+
+// Event listener: saat tombol diklik
+btnTampilkan.addEventListener('click', function () {
+
+    // Nonaktifkan tombol & tampilkan loading
+    btnTampilkan.disabled  = true;
+    btnTampilkan.innerHTML = '<span class="icon">&#9203;</span> Memuat...';
+    statusAjax.classList.add('show');
+    hasilProfil.innerHTML  = '';
+    ajaxInfo.classList.remove('show');
+    sectionLabel.style.display = 'none';
+
+    // Kirim AJAX request menggunakan fetch()
+    fetch('data.php')
+        .then(function (response) {
+            if (!response.ok) {
+                throw new Error('Gagal mengambil data. Status: ' + response.status);
+            }
+            return response.json();
+        })
+        .then(function (data) {
+            statusAjax.classList.remove('show');
+            sectionLabel.style.display = 'flex';
+
+            data.forEach(function (profil, index) {
+                const inisial = profil.nama.charAt(0).toUpperCase();
+
+                const item = document.createElement('div');
+                item.className = 'profil-item';
+                item.style.animationDelay = (index * 0.08) + 's';
+
+                item.innerHTML =
+                    '<div class="profil-avatar">' + inisial + '</div>' +
+                    '<div class="profil-info">' +
+                        '<span class="profil-field"><strong>Nama:</strong> ' + profil.nama + '</span>' +
+                        '<span class="profil-sep">|</span>' +
+                        '<span class="profil-field"><strong>Pekerjaan:</strong> ' + profil.pekerjaan + '</span>' +
+                        '<span class="profil-sep">|</span>' +
+                        '<span class="profil-field"><strong>Lokasi:</strong> ' + profil.lokasi + '</span>' +
+                    '</div>' +
+                    '<span class="profil-badge">JSON</span>';
+
+                hasilProfil.appendChild(item);
+            });
+
+            // Tampilkan info AJAX
+            ajaxInfo.classList.add('show');
+            ajaxStatusTxt.textContent = '200 OK &#10003; (' + data.length + ' data dimuat)';
+
+            // Reset tombol
+            btnTampilkan.disabled  = false;
+            btnTampilkan.innerHTML = '<span class="icon">&#8635;</span> Muat Ulang';
+        })
+        .catch(function (error) {
+            // Tampilkan pesan error
+            statusAjax.classList.remove('show');
+            hasilProfil.innerHTML =
+                '<div class="state-error">' +
+                '&#9888; <strong>Error:</strong> ' + error.message +
+                '</div>';
+
+            btnTampilkan.disabled  = false;
+            btnTampilkan.innerHTML = '<span class="icon">&#9654;</span> Coba Lagi';
+        });
+});
+</script>
+
+</body>
+</html>

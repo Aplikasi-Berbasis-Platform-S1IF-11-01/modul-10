@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Biodata - Ajax</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0f172a;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            padding-top: 60px;
+        }
+        .card-custom {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .text-header-title {
+            color: #ffffff !important;
+            font-weight: 600;
+        }
+        .btn-primary-custom {
+            background-color: #2563eb;
+            border: none;
+            padding: 10px 25px;
+            font-weight: 500;
+        }
+        /* Tabel Putih dengan Teks Hitam agar Jelas */
+        .table-container {
+            background-color: #ffffff; /* Background tabel jadi putih */
+        }
+        .table {
+            margin-bottom: 0;
+            color: #000000 !important; /* Paksa teks tabel jadi hitam */
+        }
+        .table thead th {
+            background-color: #f1f5f9;
+            color: #1e293b;
+            font-weight: 600;
+            border-bottom: 2px solid #e2e8f0;
+            padding: 15px;
+        }
+        .table tbody td {
+            color: #000000 !important; /* Teks nama & lainnya pasti hitam */
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <h2 class="mb-4 fw-bold text-white">Biodata Anak</h2>
+            
+            <div class="card card-custom">
+                <div class="card-header border-0 p-4 d-flex justify-content-between align-items-center">
+                    <h5 class="m-0 text-header-title">Manajemen Biodata Anak</h5>
+                    <button id="btn-tampilkan" class="btn btn-primary-custom rounded-pill">
+                        + Tampilkan Profil
+                    </button>
+                </div>
+                
+                <div id="hasil-profil" class="table-container">
+                    <div class="p-5 text-center">
+                        <p style="color: #94a3b8;">Klik tombol untuk memuat data...</p>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="mt-5 text-center text-secondary small">
+                Tugas Modul 10 - Nisrina Amalia - Platform Based Application &copy; 2026
+            </footer>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('btn-tampilkan').addEventListener('click', function() {
+    const container = document.getElementById('hasil-profil');
+    container.innerHTML = '<div class="text-center p-5"><div class="spinner-border text-primary" role="status"></div></div>';
+
+    fetch('data.php')
+        .then(response => response.json())
+        .then(data => {
+            let tableHTML = `
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Lengkap</th>
+                                <th>Pekerjaan / Status</th>
+                                <th>Lokasi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+
+            data.forEach((item, index) => {
+                tableHTML += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td class="fw-bold text-dark">${item.nama}</td>
+                        <td>${item.pekerjaan}</td>
+                        <td><span class="badge bg-dark">${item.lokasi}</span></td>
+                    </tr>
+                `;
+            });
+
+            tableHTML += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            container.innerHTML = tableHTML;
+        })
+        .catch(error => {
+            container.innerHTML = `<div class="alert alert-danger m-4">Error: ${error.message}</div>`;
+        });
+});
+</script>
+
+</body>
+</html>

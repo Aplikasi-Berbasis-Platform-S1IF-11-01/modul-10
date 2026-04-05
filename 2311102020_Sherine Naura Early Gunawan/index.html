@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tugas AJAX - Modul 10</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #hasil-profil {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px dashed #ccc;
+            display: inline-block;
+            min-width: 300px;
+        }
+
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Ambil Data Tanpa Reload</h2>
+
+    <button id="btn-tampil">Tampilkan Profil</button>
+
+    <div id="hasil-profil">Data akan muncul di sini...</div>
+
+    <script>
+        document.getElementById('btn-tampil').addEventListener('click', function () {
+
+            fetch('data.php')
+                .then(response => response.json()) 
+                .then(data => {
+                    const info = `*Nama: ${data.nama} | Pekerjaan: ${data.pekerjaan} | Lokasi: ${data.lokasi}*`;
+                    document.getElementById('hasil-profil').innerHTML = info;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('hasil-profil').innerHTML = "Gagal mengambil data.";
+                });
+        });
+    </script>
+
+</body>
+
+</html>

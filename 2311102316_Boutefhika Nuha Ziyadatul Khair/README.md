@@ -384,9 +384,9 @@ function tampilProfil() {
 ```
 
 Output:
-![Gambar7](images/gambar7.png)
+![Gambar7](Images/gambar7.png)
 
-![Gambar8](images/gambar8.png)
+![Gambar8](Images/gambar8.png)
 
 Deskripsi:
 Program ini merupakan implementasi AJAX menggunakan jQuery untuk mengambil data dari server dan menampilkannya secara dinamis ke halaman web tanpa melakukan reload. Program bekerja dengan menampilkan sebuah tombol yang ketika diklik akan mengirim request ke server menggunakan metode AJAX.

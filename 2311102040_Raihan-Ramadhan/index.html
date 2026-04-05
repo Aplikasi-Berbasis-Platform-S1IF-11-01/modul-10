@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX Profil Tim</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #dbeafe, #eff6ff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 700px;
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #1e3a8a;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 12px 25px;
+            border: none;
+            background: #2563eb;
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        #hasil-profil {
+            margin-top: 25px;
+            display: grid;
+            gap: 15px;
+        }
+
+        .card {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: left;
+        }
+
+        .nama {
+            font-weight: bold;
+            color: #1e40af;
+        }
+
+        .job {
+            color: #059669;
+        }
+
+        .lokasi {
+            color: #475569;
+        }
+
+        .loading {
+            color: orange;
+            font-weight: bold;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Data Profil Tim</h1>
+        <button id="btnProfil">Tampilkan Profil</button>
+
+        <div id="hasil-profil"></div>
+    </div>
+
+    <script>
+        const btn = document.getElementById('btnProfil');
+        const hasil = document.getElementById('hasil-profil');
+
+        btn.addEventListener('click', function () {
+            hasil.innerHTML = '<div class="loading">Loading data...</div>';
+
+            fetch('data.php')
+                .then(res => res.json())
+                .then(data => {
+                    let output = '';
+
+                    data.forEach(item => {
+                        output += `
+                            <div class="card">
+                                <div class="nama">Nama: ${item.nama}</div>
+                                <div class="job">Pekerjaan: ${item.pekerjaan}</div>
+                                <div class="lokasi">Lokasi: ${item.lokasi}</div>
+                            </div>
+                        `;
+                    });
+
+                    hasil.innerHTML = output;
+                })
+                .catch(err => {
+                    hasil.innerHTML = '<div class="error">Gagal mengambil data!</div>';
+                });
+        });
+    </script>
+</body>
+</html>

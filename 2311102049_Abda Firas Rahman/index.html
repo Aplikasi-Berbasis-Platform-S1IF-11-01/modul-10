@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas Modul 10 - Ajax</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #fff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        h2 {
+            margin-top: 0;
+            font-size: 22px;
+            color: #2c3e50;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            margin-bottom: 20px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #hasil-profil {
+            padding: 15px;
+            background-color: #e8f4f8;
+            border: 1px solid #d1e8f0;
+            border-radius: 6px;
+            font-size: 15px;
+            color: #2c3e50;
+            display: none; 
+        }
+        /* Class tambahan untuk efek munculin box */
+        .tampil {
+            display: block !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Profil Pengguna</h2>
+        <button id="btn-tampil">Tampilkan Profil</button>
+        
+        <div id="hasil-profil"></div>
+    </div>
+
+    <script>
+        // Menangkap elemen tombol dan div hasil
+        const btnTampil = document.getElementById('btn-tampil');
+        const hasilProfil = document.getElementById('hasil-profil');
+                                // Abad Firas Rahman - 2311102049 - IF-REG-01
+        // Menambahkan event listener klik pada tombol
+        btnTampil.addEventListener('click', function() {
+            // Ubah teks tombol biar ada indikator loading nya
+            btnTampil.innerText = "Memuat...";
+
+            // Menggunakan Fetch API untuk ambil data dari data.php
+            fetch('data.php')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    hasilProfil.innerHTML = `Nama: ${data.nama} | Pekerjaan: ${data.pekerjaan} | Lokasi: ${data.lokasi}`;
+                    hasilProfil.classList.add('tampil');
+                    
+                    // Kembalikan teks tombol
+                    btnTampil.innerText = "Tampilkan Profil";
+                })
+                .catch(error => {
+                    console.error('Ada masalah dengan fetch:', error);
+                    hasilProfil.innerHTML = "Gagal mengambil data nya.";
+                    hasilProfil.classList.add('tampil');
+                    btnTampil.innerText = "Tampilkan Profil";
+                });
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+//Andika Neviantoro
+//2311102167
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul 10 - AJAX</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background: #f4f4f4;
+            color: #333;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background: #4a90d9;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #357abd;
+        }
+
+        #hasil-profil {
+            margin-top: 20px;
+            padding: 14px 18px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            display: none;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Data menggunakan AJAX</h2>
+
+    <button id="btn-tampilkan">Tampilkan Profil</button>
+
+    <div id="hasil-profil"></div>
+
+    <script>
+        document.getElementById('btn-tampilkan').addEventListener('click', function () {
+            fetch('data.php')
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    var div = document.getElementById('hasil-profil');
+                    div.style.display = 'block';
+                    div.innerHTML = '<strong>Nama:</strong> ' + data.nama +
+                                    ' | <strong>Pekerjaan:</strong> ' + data.pekerjaan +
+                                    ' | <strong>Lokasi:</strong> ' + data.lokasi;
+                })
+                .catch(function (error) {
+                    var div = document.getElementById('hasil-profil');
+                    div.style.display = 'block';
+                    div.innerHTML = 'Gagal mengambil data: ' + error;
+                });
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>AJAX Profil</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .card-main {
+            border-radius: 20px;
+            background: white;
+        }
+
+        .btn-custom {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 10px 20px;
+        }
+
+        .btn-custom:hover {
+            opacity: 0.9;
+        }
+
+        .profile-card {
+            border-radius: 15px;
+            transition: 0.3s;
+        }
+
+        .profile-card:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container mt-5 text-center">
+    <div class="card shadow-lg p-4 card-main">
+        <h2>✨ AJAX Data Mahasiswa</h2>
+        <p>Klik tombol untuk menampilkan data tanpa reload</p>
+
+        <button onclick="loadData()" class="btn btn-custom">
+            🚀 Tampilkan Profil
+        </button>
+
+        <div id="hasil-profil" class="row mt-4"></div>
+    </div>
+</div>
+
+<script>
+function loadData() {
+    fetch('data.php')
+        .then(response => response.json())
+        .then(data => {
+            let output = "";
+
+            data.forEach(item => {
+                output += `
+                <div class="col-md-4 mb-3">
+                    <div class="card profile-card shadow">
+                        <div class="card-body">
+                            <h5 class="card-title text-primary">${item.nama}</h5>
+                            <p class="card-text">
+                                <b>NIM:</b> ${item.nim} <br>
+                                <b>Pekerjaan:</b> ${item.pekerjaan} <br>
+                                <b>Lokasi:</b> ${item.lokasi}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                `;
+            });
+
+            document.getElementById('hasil-profil').innerHTML = output;
+        })
+        .catch(error => {
+            document.getElementById('hasil-profil').innerHTML =
+                `<div class="alert alert-danger mt-3">Gagal mengambil data!</div>`;
+        });
+}
+</script>
+
+</body>
+</html>

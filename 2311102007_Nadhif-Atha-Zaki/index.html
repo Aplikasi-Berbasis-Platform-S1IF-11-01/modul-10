@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Modul 10 AJAX</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6f8;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .box {
+            background: white;
+            padding: 30px;
+            width: 400px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        button {
+            padding: 10px 20px;
+            background: blue;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #hasil-profil {
+            margin-top: 20px;
+            padding: 10px;
+            background: #eee;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h2>Tugas Modul 10 - AJAX</h2>
+    <button id="btn">Tampilkan Profil</button>
+
+    <div id="hasil-profil">Klik tombol dulu...</div>
+</div>
+
+<script>
+document.getElementById("btn").addEventListener("click", function () {
+
+    fetch("data.php")
+        .then(response => {
+            console.log("STATUS:", response.status);
+
+            if (!response.ok) {
+                throw new Error("File tidak ditemukan / error server (" + response.status + ")");
+            }
+
+            return response.json();
+        })
+        .then(data => {
+            console.log("DATA:", data);
+
+            document.getElementById("hasil-profil").innerHTML =
+                `Nama: ${data.nama} | Pekerjaan: ${data.pekerjaan} | Lokasi: ${data.lokasi}`;
+        })
+        .catch(error => {
+            console.error("ERROR:", error);
+
+            document.getElementById("hasil-profil").innerHTML =
+                "ERROR: " + error.message;
+        });
+
+});
+</script>
+
+</body>
+</html>

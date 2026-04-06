@@ -521,8 +521,7 @@ echo json_encode($response, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
 
 ### Penjelasan Code:
 
-1. File `data.php`
-File `data.php` berfungsi sebagai **server** yang menyediakan data profil.
+1. File `data.php` berfungsi sebagai **server** yang menyediakan data profil.
 Data disimpan dalam variabel `$daftarProfil` dalam bentuk **array multidimensi**.
 Setiap profil memiliki data:
   - nama
@@ -549,8 +548,7 @@ digunakan untuk mengubah array PHP menjadi format JSON.
 
 File ini hanya bertugas mengirim data, bukan menampilkan halaman web.
 
-2. File index.html
-File index.html berfungsi sebagai client atau halaman utama website.
+2. File `index.html` berfungsi sebagai client atau halaman utama website.
 - File ini berisi:
 - struktur HTML
 - desain CSS
@@ -558,8 +556,8 @@ File index.html berfungsi sebagai client atau halaman utama website.
 - Bagian identitas digunakan untuk menampilkan nama dan NIM pembuat.
 - Bagian judul menjelaskan bahwa halaman mengambil data dari server tanpa reload.
 - Tombol Tampilkan Profil digunakan untuk memulai proses pengambilan data.
-- <div id="hasil-profil"> digunakan sebagai tempat menampilkan data profil.
-- <div id="summaryBox"> digunakan untuk menampilkan ringkasan jumlah profil.
+- `<div id="hasil-profil">` digunakan sebagai tempat menampilkan data profil.
+- `<div id="summaryBox">` digunakan untuk menampilkan ringkasan jumlah profil.
 
 JavaScript pada index.html
 

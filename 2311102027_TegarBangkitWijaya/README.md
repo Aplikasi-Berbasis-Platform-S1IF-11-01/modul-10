@@ -253,11 +253,11 @@ $profil = [
 ### 4.1 Tampilan Awal Halaman
 Saat aplikasi dibuka di browser melalui XAMPP pada alamat `http://localhost/Modul%2010/`, akan tampil halaman Demo AJAX dengan latar belakang gelap (*dark theme*) berwarna `#0d0f14` dilengkapi overlay grid transparan berwarna cyan. Di bagian atas tengah terdapat badge berlabel **MODUL 10 — AJAX** dengan border berwarna cyan. Di bawahnya terdapat judul utama **Data Profil via AJAX** berukuran besar menggunakan font Orbitron dengan warna gradien cyan kehijauan. Terdapat subjudul berwarna abu-abu bertuliskan *Klik tombol untuk mengambil data dari server tanpa reload halaman.* serta satu tombol berlabel **Tampilkan Profil** dengan warna gradien teal-cyan dan efek glow. Di bagian bawah terdapat keterangan *Data diambil dari **data.php** menggunakan **Fetch API***. Pada tahap ini `div#hasil-profil` masih kosong dan belum ada data yang ditampilkan.
 
-![Tampilan Awal Halaman](ss-1.png)
+![Tampilan Awal Halaman](ss-1.jpeg)
 
 ### 4.2 Tampilan Setelah Tombol Diklik
 Ketika tombol **Tampilkan Profil** diklik, JavaScript menjalankan `fetch('data.php')` untuk mengambil data dari server secara asinkron. Setelah data berhasil diterima dalam format JSON, tiga kartu profil muncul satu per satu dengan animasi fade-up di dalam `div#hasil-profil`. Setiap kartu menampilkan avatar inisial nama dengan warna berbeda (cyan, kuning, ungu), nama lengkap, pekerjaan, dan lokasi di atas latar kartu gelap `#161b24` dengan border tipis. Proses ini berlangsung tanpa reload halaman sama sekali, yang merupakan inti dari konsep AJAX.
-![Tampilan Setelah Tombol Diklik](ss-2.png)
+![Tampilan Setelah Tombol Diklik](ss-2.jpeg)
 
 ---
 

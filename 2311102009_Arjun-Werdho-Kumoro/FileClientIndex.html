@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>AJAX Arjun Werdho Kumoro 2311102009</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+body {
+    background: linear-gradient(135deg, #1d2b64, #f8cdda);
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Glass effect */
+.glass {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 20px;
+    color: white;
+}
+
+/* Card */
+.card-profil {
+    border-radius: 20px;
+    padding: 20px;
+    transition: 0.4s;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(8px);
+}
+
+/* Hover efek */
+.card-profil:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+}
+
+/* Animasi muncul */
+.fade-in {
+    animation: fadeInUp 0.8s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Tombol keren */
+.btn-custom {
+    background: #ffcc00;
+    border: none;
+    font-weight: bold;
+    border-radius: 30px;
+    padding: 10px 25px;
+    transition: 0.3s;
+}
+
+.btn-custom:hover {
+    background: #ffaa00;
+    transform: scale(1.05);
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="container mt-5">
+
+    <!-- Header -->
+    <div class="glass text-center mb-4">
+        <h1>🚀 Data Penjual Modern</h1>
+        <p>Klik tombol untuk menampilkan data tanpa reload (AJAX)</p>
+        <button class="btn btn-custom mt-2" onclick="tampilkanProfil()">
+            Tampilkan Profil
+        </button>
+    </div>
+
+    <!-- Data -->
+    <div class="row" id="hasil-profil">
+        <h5 class="text-center text-white">Klik tombol dulu 👆</h5>
+    </div>
+
+</div>
+
+<script>
+function tampilkanProfil() {
+
+    // loading
+    document.getElementById("hasil-profil").innerHTML =
+        "<p class='text-center text-white'>⏳ Loading data...</p>";
+
+    fetch('FileServerData.php')
+        .then(res => res.json())
+        .then(data => {
+            let output = "";
+
+            data.forEach((item, index) => {
+                output += `
+                <div class="col-md-4 mb-4 fade-in">
+                    <div class="card-profil text-white">
+                        <h3>👤 ${item.nama}</h3>
+                        <p>💼 <b>${item.pekerjaan}</b></p>
+                        <p>📍 ${item.lokasi}</p>
+                    </div>
+                </div>
+                `;
+            });
+
+            document.getElementById("hasil-profil").innerHTML = output;
+        })
+        .catch(err => {
+            document.getElementById("hasil-profil").innerHTML =
+                "<p class='text-danger text-center'>❌ Gagal ambil data</p>";
+            console.log(err);
+        });
+}
+</script>
+
+</body>
+</html>

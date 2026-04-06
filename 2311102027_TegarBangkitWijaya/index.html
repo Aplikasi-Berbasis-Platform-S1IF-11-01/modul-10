@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Modul 10 – AJAX Profil</title>
+
+  <!-- Google Fonts: Syne (display) + DM Sans (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* ── Variabel Warna ── */
+    :root {
+      --bg:       #0d0f14;
+      --surface:  #15181f;
+      --border:   #242832;
+      --accent:   #6ee7b7;   /* hijau mint cerah */
+      --accent2:  #38bdf8;   /* biru langit */
+      --text:     #e8eaf0;
+      --muted:    #6b7280;
+      --radius:   14px;
+    }
+
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 20px 80px;
+    }
+
+    /* ── Header ── */
+    header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    header .label {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 100px;
+      padding: 4px 14px;
+      margin-bottom: 18px;
+    }
+    header h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 6vw, 3.4rem);
+      font-weight: 800;
+      line-height: 1.1;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    header p {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: .95rem;
+    }
+
+    /* ── Tombol ── */
+    #btn-tampilkan {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      color: var(--bg);
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: transform .15s, box-shadow .15s, filter .2s;
+      box-shadow: 0 0 0 0 rgba(110,231,183,.4);
+      margin-bottom: 48px;
+    }
+    #btn-tampilkan:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(110,231,183,.35);
+      filter: brightness(1.08);
+    }
+    #btn-tampilkan:active { transform: translateY(0); }
+    #btn-tampilkan.loading { opacity: .7; pointer-events: none; }
+
+    /* ikon spinner SVG inline */
+    #btn-tampilkan .spinner {
+      display: none;
+      width: 18px; height: 18px;
+      border: 2px solid rgba(0,0,0,.25);
+      border-top-color: rgba(0,0,0,.7);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+    #btn-tampilkan.loading .spinner { display: block; }
+    #btn-tampilkan.loading .btn-text::after { content: '…'; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Area Hasil ── */
+    #hasil-profil {
+      width: 100%;
+      max-width: 700px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* ── Kartu Profil ── */
+    .kartu {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+
+      /* animasi masuk */
+      opacity: 0;
+      transform: translateY(18px);
+      animation: slideUp .4s ease forwards;
+    }
+    /* Staggered delay untuk tiap kartu */
+    .kartu:nth-child(1) { animation-delay: .05s; }
+    .kartu:nth-child(2) { animation-delay: .12s; }
+    .kartu:nth-child(3) { animation-delay: .19s; }
+    .kartu:nth-child(4) { animation-delay: .26s; }
+    .kartu:nth-child(5) { animation-delay: .33s; }
+
+    @keyframes slideUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Avatar inisial */
+    .avatar {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--bg);
+      flex-shrink: 0;
+    }
+
+    .info { flex: 1; }
+    .info .nama {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .info .detail {
+      font-size: .88rem;
+      color: var(--muted);
+    }
+    .info .detail span {
+      display: inline-block;
+      margin-right: 14px;
+    }
+    .info .detail span::before {
+      margin-right: 4px;
+    }
+
+    /* Badge pekerjaan */
+    .badge {
+      font-size: .75rem;
+      font-weight: 500;
+      letter-spacing: .05em;
+      padding: 4px 12px;
+      border-radius: 100px;
+      background: rgba(110,231,183,.12);
+      color: var(--accent);
+      border: 1px solid rgba(110,231,183,.25);
+      white-space: nowrap;
+    }
+
+    /* ── Pesan Error ── */
+    .pesan-error {
+      color: #f87171;
+      background: rgba(248,113,113,.08);
+      border: 1px solid rgba(248,113,113,.25);
+      border-radius: var(--radius);
+      padding: 16px 22px;
+      font-size: .95rem;
+    }
+
+    /* ── Footer kecil ── */
+    footer {
+      margin-top: 64px;
+      font-size: .78rem;
+      color: var(--muted);
+      text-align: center;
+      letter-spacing: .04em;
+    }
+    footer strong { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header>
+    <div class="label">Modul 10 &mdash; AJAX</div>
+    <h1>Data Profil<br/>via AJAX</h1>
+    <p>Klik tombol untuk mengambil data dari server tanpa reload halaman.</p>
+  </header>
+
+  <!-- ── Tombol ── -->
+  <button id="btn-tampilkan">
+    <div class="spinner"></div>
+    <span class="btn-text">Tampilkan Profil</span>
+  </button>
+
+  <!-- ── Tempat menampilkan hasil ── -->
+  <div id="hasil-profil"></div>
+
+  <!-- ── Footer ── -->
+  <footer>Data diambil dari <strong>data.php</strong> menggunakan <strong>Fetch API</strong></footer>
+
+  <!-- ── JavaScript / Logika AJAX ── -->
+  <script>
+    const tombol      = document.getElementById('btn-tampilkan');
+    const hasilProfil = document.getElementById('hasil-profil');
+
+    tombol.addEventListener('click', function () {
+
+      // Tampilkan status loading
+      tombol.classList.add('loading');
+      hasilProfil.innerHTML = '';
+
+      // ── AJAX dengan Fetch API ──
+      fetch('data.php')
+        .then(function (response) {
+          // Periksa apakah request berhasil (status 200–299)
+          if (!response.ok) {
+            throw new Error('Gagal mengambil data. Status: ' + response.status);
+          }
+          // Parse response menjadi objek JavaScript (dari JSON)
+          return response.json();
+        })
+        .then(function (dataProfil) {
+          // dataProfil adalah array objek dari server
+          dataProfil.forEach(function (orang) {
+            hasilProfil.innerHTML += buatKartu(orang);
+          });
+        })
+        .catch(function (error) {
+          // Tampilkan pesan error jika request gagal
+          hasilProfil.innerHTML =
+            '<div class="pesan-error">⚠️ ' + error.message + '</div>';
+        })
+        .finally(function () {
+          // Kembalikan tombol ke kondisi normal
+          tombol.classList.remove('loading');
+        });
+    });
+
+    /**
+     * Membuat markup HTML satu kartu profil.
+     * Format teks: "Nama: X | Pekerjaan: Y | Lokasi: Z"
+     * @param {Object} orang - { nama, pekerjaan, lokasi }
+     * @returns {string} HTML string
+     */
+    function buatKartu(orang) {
+      const inisial = orang.nama.charAt(0).toUpperCase();
+      return `
+        <div class="kartu">
+          <div class="avatar">${inisial}</div>
+          <div class="info">
+            <div class="nama">${orang.nama}</div>
+            <div class="detail">
+              <span>📍 ${orang.lokasi}</span>
+              <span style="color:#6b7280">Nama: <b style="color:#e8eaf0">${orang.nama}</b> | Pekerjaan: <b style="color:#e8eaf0">${orang.pekerjaan}</b> | Lokasi: <b style="color:#e8eaf0">${orang.lokasi}</b></span>
+            </div>
+          </div>
+          <div class="badge">${orang.pekerjaan}</div>
+        </div>`;
+    }
+  </script>
+
+</body>
+</html>

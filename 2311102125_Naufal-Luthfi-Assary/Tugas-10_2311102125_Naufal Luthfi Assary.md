@@ -588,6 +588,6 @@ response.json()
 - Jika terjadi error, program menampilkan pesan gagal mengambil data.
 
 
-## Refrensi
+## Referensi
 - [MDN Web Docs - Fetch API (AJAX)](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
 - [PHP](https://www.php.net/manual/en/function.json-encode.php)

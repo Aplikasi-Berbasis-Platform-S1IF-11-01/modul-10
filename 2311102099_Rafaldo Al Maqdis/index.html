@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Profil AJAX</title>
+
+  <!-- ====== IMPORT GOOGLE FONTS ====== -->
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================
+       CSS VARIABLES (Tema Biru Tua)
+       ============================ */
+    :root {
+      --bg-deep:    #050d1a;
+      --bg-card:    #0a1628;
+      --border:     #1a3a6e;
+      --accent:     #1e6bff;
+      --accent-glow:#3d87ff;
+      --text-main:  #e8f0ff;
+      --text-muted: #6a85b5;
+      --label:      #4a9eff;
+      --success:    #00d4aa;
+    }
+
+    /* ============================
+       RESET & BASE
+       ============================ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-deep);
+      color: var(--text-main);
+      font-family: 'IBM Plex Mono', monospace;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+
+      /* Efek grid background */
+      background-image:
+        linear-gradient(rgba(30, 107, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30, 107, 255, 0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* ============================
+       CARD UTAMA
+       ============================ */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 480px;
+      box-shadow:
+        0 0 0 1px rgba(30, 107, 255, 0.1),
+        0 20px 60px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255,255,255,0.04);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Garis aksen di atas card */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    /* ============================
+       HEADER CARD
+       ============================ */
+    .card-header {
+      margin-bottom: 2rem;
+    }
+
+    .card-tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(30, 107, 255, 0.1);
+      border: 1px solid rgba(30, 107, 255, 0.3);
+      padding: 3px 10px;
+      border-radius: 4px;
+      margin-bottom: 0.8rem;
+    }
+
+    .card-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .card-subtitle {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+    }
+
+    /* ============================
+       TOMBOL
+       ============================ */
+    #btn-tampilkan {
+      width: 100%;
+      padding: 0.85rem 1.5rem;
+      background: var(--accent);
+      color: #fff;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(30, 107, 255, 0.35);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #btn-tampilkan:hover {
+      background: var(--accent-glow);
+      box-shadow: 0 4px 28px rgba(30, 107, 255, 0.55);
+      transform: translateY(-1px);
+    }
+
+    #btn-tampilkan:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 10px rgba(30, 107, 255, 0.3);
+    }
+
+    /* Animasi loading pada tombol */
+    #btn-tampilkan.loading {
+      opacity: 0.7;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* ============================
+       AREA HASIL DATA
+       ============================ */
+    #hasil-profil {
+      margin-top: 1.5rem;
+      border-radius: 10px;
+      overflow: hidden;
+
+      /* Sembunyikan dulu sebelum ada data */
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 0.5s ease, opacity 0.4s ease;
+    }
+
+    /* Kelas aktif ketika data sudah muncul */
+    #hasil-profil.aktif {
+      max-height: 300px;
+      opacity: 1;
+    }
+
+    .profil-box {
+      background: rgba(30, 107, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+    }
+
+    .profil-box .profil-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--success);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .profil-box .profil-title::before {
+      content: '●';
+      font-size: 0.6rem;
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.2; }
+    }
+
+    /* Setiap baris data profil */
+    .profil-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(30, 107, 255, 0.1);
+    }
+
+    .profil-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .profil-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--label);
+      min-width: 90px;
+    }
+
+    .profil-value {
+      font-size: 0.9rem;
+      color: var(--text-main);
+      font-weight: 400;
+    }
+
+    /* ============================
+       PESAN ERROR
+       ============================ */
+    .error-box {
+      background: rgba(255, 60, 60, 0.08);
+      border: 1px solid rgba(255, 60, 60, 0.25);
+      border-radius: 10px;
+      padding: 1rem 1.2rem;
+      font-size: 0.8rem;
+      color: #ff7070;
+    }
+
+    /* ============================
+       FOOTER KECIL
+       ============================ */
+    .card-footer {
+      margin-top: 1.5rem;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-align: center;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+
+    <!-- Header -->
+    <div class="card-header">
+      <span class="card-tag">AJAX · PHP · JSON</span>
+      <h1 class="card-title">Data Profil<br>Pengguna</h1>
+      <p class="card-subtitle">Klik tombol untuk mengambil data dari server via AJAX</p>
+    </div>
+
+    <!-- Tombol -->
+    <button id="btn-tampilkan">▶ Tampilkan Profil</button>
+
+    <!-- Div untuk menampilkan hasil data -->
+    <div id="hasil-profil"></div>
+
+    <!-- Footer -->
+    <p class="card-footer">fetch() → data.php → json_encode() → tampil</p>
+
+  </div>
+
+
+  <script>
+    // ============================================================
+    // JAVASCRIPT + AJAX menggunakan fetch()
+    // ============================================================
+
+    // Ambil referensi elemen yang dibutuhkan
+    const tombol       = document.getElementById('btn-tampilkan');
+    const hasilProfil  = document.getElementById('hasil-profil');
+
+    // Tambahkan event listener saat tombol diklik
+    tombol.addEventListener('click', function () {
+
+      // Ubah teks tombol sementara (feedback ke user)
+      tombol.textContent = '⏳ Mengambil data...';
+      tombol.classList.add('loading');
+
+      // ==============================
+      // Kirim request ke data.php
+      // ==============================
+      fetch('data.php')
+        .then(function (response) {
+          // Cek apakah request berhasil
+          if (!response.ok) {
+            throw new Error('Gagal terhubung ke server (Status: ' + response.status + ')');
+          }
+          // Ubah response menjadi JSON
+          return response.json();
+        })
+        .then(function (data) {
+          // ==============================
+          // Tampilkan data ke dalam div
+          // ==============================
+          hasilProfil.innerHTML = `
+            <div class="profil-box">
+              <div class="profil-title">Data berhasil dimuat</div>
+
+              <div class="profil-row">
+                <span class="profil-label">Nama</span>
+                <span class="profil-value">${data.nama}</span>
+              </div>
+
+              <div class="profil-row">
+                <span class="profil-label">Pekerjaan</span>
+                <span class="profil-value">${data.pekerjaan}</span>
+              </div>
+
+              <div class="profil-row">
+                <span class="profil-label">Lokasi</span>
+                <span class="profil-value">${data.lokasi}</span>
+              </div>
+            </div>
+          `;
+
+          // Aktifkan animasi munculnya hasil
+          hasilProfil.classList.add('aktif');
+
+          // Kembalikan tombol ke teks semula
+          tombol.textContent = '✓ Profil Ditampilkan';
+        })
+        .catch(function (error) {
+          // ==============================
+          // Tampilkan pesan error jika gagal
+          // ==============================
+          hasilProfil.innerHTML = `
+            <div class="error-box">
+              ✗ Error: ${error.message}
+            </div>
+          `;
+          hasilProfil.classList.add('aktif');
+
+          // Kembalikan tombol agar bisa dicoba lagi
+          tombol.textContent = '↺ Coba Lagi';
+        })
+        .finally(function () {
+          // Lepas kelas loading agar tombol bisa diklik lagi
+          tombol.classList.remove('loading');
+        });
+
+    }); // akhir addEventListener
+  </script>
+
+</body>
+</html>

@@ -111,19 +111,19 @@ Sebagai contoh, saat pengguna menekan tombol Tampilkan Profil, JavaScript akan m
 9. Hubungan AJAX, PHP, dan JSON
 
 Dalam aplikasi web sederhana, ketiga komponen ini saling berkaitan:
-	•	AJAX digunakan untuk mengirim dan menerima data tanpa reload halaman
-	•	PHP digunakan untuk menyediakan data dari server
-	•	JSON digunakan sebagai format data yang dikirim dari server ke client
+- AJAX digunakan untuk mengirim dan menerima data tanpa reload halaman
+- PHP digunakan untuk menyediakan data dari server
+- JSON digunakan sebagai format data yang dikirim dari server ke client
 
 Gabungan ketiganya memungkinkan pembuatan web yang lebih modern, cepat, dan interaktif.
 
 10. Penerapan pada Tugas
 
 Pada tugas ini, konsep AJAX diterapkan dengan membuat:
-	•	file data.php sebagai server sederhana yang menyediakan data profil
-	•	file index.html sebagai client yang menampilkan halaman web
-	•	JavaScript fetch() untuk mengambil data dari data.php
-	•	elemen HTML untuk menampilkan data profil yang diterima dari server
+- file data.php sebagai server sederhana yang menyediakan data profil
+- file index.html sebagai client yang menampilkan halaman web
+- JavaScript fetch() untuk mengambil data dari data.php
+- elemen HTML untuk menampilkan data profil yang diterima dari server
 
 ---
 

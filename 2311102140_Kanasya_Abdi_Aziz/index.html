@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Kanasya - Premium AJAX</title>
+    <!-- Font & Icon -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #a855f7;
+            --bg-gradient: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            color: #1f2937;
+        }
+
+        /* Card Glassmorphism */
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .profile-header { margin-bottom: 1.5rem; }
+
+        /* Avatar Placeholder */
+        .avatar {
+            width: 80px;
+            height: 80px;
+            background: var(--bg-gradient);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 1rem;
+            color: white;
+            box-shadow: 0 8px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        h2 { font-weight: 800; margin: 0; font-size: 1.5rem; letter-spacing: -0.5px; }
+        p { color: #6b7280; font-size: 0.9rem; margin-top: 5px; }
+
+        #btn-fetch {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-weight: 600;
+            width: 100%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        #btn-fetch:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+            filter: brightness(1.1);
+        }
+
+        #hasil-profil {
+            margin-top: 2rem;
+            text-align: left;
+            display: none;
+        }
+
+        .data-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border: 1px solid #e2e8f0;
+            transition: 0.3s;
+        }
+
+        .data-row:hover { background: #f1f5f9; }
+
+        .icon-box {
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+        }
+
+        .label { font-size: 0.75rem; color: #94a3b8; display: block; font-weight: 600; }
+        .value { font-size: 0.95rem; color: #334155; font-weight: 600; }
+
+        /* Animation */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate { animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="profile-header">
+            <div class="avatar"><i data-lucide="user" size="40"></i></div>
+            <h2>Data Profil</h2>
+            <p>Modul 10 - AJAX Fetch System</p>
+        </div>
+
+        <button id="btn-fetch">
+            <i data-lucide="refresh-cw" size="18" id="loader-icon"></i>
+            <span>Tampilkan Profil</span>
+        </button>
+
+        <div id="hasil-profil">
+            <!-- Data AJAX di sini -->
+        </div>
+    </div>
+
+    <script>
+        // Inisialisasi Ikon Lucide
+        lucide.createIcons();
+
+        document.getElementById('btn-fetch').addEventListener('click', function() {
+            const btn = this;
+            const container = document.getElementById('hasil-profil');
+            const loader = document.getElementById('loader-icon');
+
+            // Tambah animasi putar pada ikon loading
+            loader.style.animation = "spin 1s linear infinite";
+            btn.querySelector('span').innerText = 'Menghubungkan...';
+
+            fetch('data.php')
+                .then(response => response.json())
+                .then(data => {
+                    container.innerHTML = `
+                        <div class="data-row">
+                            <div class="icon-box"><i data-lucide="user-check" size="20"></i></div>
+                            <div><span class="label">NAMA LENGKAP</span><span class="value">${data.nama}</span></div>
+                        </div>
+                        <div class="data-row">
+                            <div class="icon-box"><i data-lucide="briefcase" size="20"></i></div>
+                            <div><span class="label">PEKERJAAN</span><span class="value">${data.pekerjaan}</span></div>
+                        </div>
+                        <div class="data-row">
+                            <div class="icon-box"><i data-lucide="map-pin" size="20"></i></div>
+                            <div><span class="label">ASAL DAERAH</span><span class="value">${data.lokasi}</span></div>
+                        </div>
+                    `;
+                    
+                    // Re-render ikon baru yang baru ditambahkan
+                    lucide.createIcons();
+                    
+                    container.style.display = 'block';
+                    container.classList.add('animate');
+                    
+                    btn.style.display = 'none'; // Sembunyikan tombol setelah selesai
+                })
+                .catch(err => {
+                    alert('Gagal mengambil data!');
+                    console.error(err);
+                });
+        });
+    </script>
+
+    <style>
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</body>
+</html>

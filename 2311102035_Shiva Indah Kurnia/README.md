@@ -4,14 +4,14 @@
   <br />
   <h3>MODUL 10 <br> AJAX</h3>
   <br />
-  <img src="assets/logo.jpeg" alt="Logo" width="300">
+  <img src="assets/TU.jpg" alt="Logo" width="300">
   <br />
   <br />
   <br />
   <h3>Disusun Oleh :</h3>
   <p>
-    <strong>Mohammad Alfan Naraya</strong><br>
-    <strong>2311102170</strong><br>
+    <strong>Shiva Indah Kurnia</strong><br>
+    <strong>2311102035</strong><br>
     <strong>S1 IF-11-01</strong>
   </p>
   <br />
@@ -45,17 +45,17 @@
 
 ```php
 <?php
-
+// Memberitahu browser bahwa data yang dikirim adalah format JSON
 header('Content-Type: application/json');
 
-
+// Membuat array asosiatif untuk data profil
 $data = [
-    'nama' => 'Mohammad Alfan Naraya',
-    'pekerjaan' => 'Web Developer',
-    'lokasi' => 'Jakarta'
+    'nama' => 'Shiva Indah Kurnia',
+    'pekerjaan' => 'Full-Stack Web Developer',
+    'lokasi' => 'Bandung, Indonesia'
 ];
 
-
+// Mengubah format array PHP menjadi format JSON lalu menampilkannya
 echo json_encode($data);
 ?>
 ```
@@ -68,204 +68,158 @@ echo json_encode($data);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil Alfan - Modul10</title>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    
+    <title>Biodata AJAX</title>
     <style>
-        :root {
-            --bg-deep: #0f172a;       /* Slate Dark */
-            --card-surface: #1e293b;  /* Slate Medium */
-            --accent-blue: #38bdf8;   /* Sky Blue */
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
+        /* Desain Monokrom Minimalis (Hitam Putih) */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-deep);
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(56, 189, 248, 0.08) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(56, 189, 248, 0.05) 0px, transparent 50%);
+            /* Font standar yang bersih tanpa perlu link eksternal */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff; /* Latar belakang putih mutlak */
+            color: #000000; /* Teks hitam mutlak */
+            display: flex;
+            justify-content: center;
+            align-items: center;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0;
-            color: var(--text-primary);
+            padding: 20px;
         }
 
-        .profile-card {
-            background: var(--card-surface);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 28px;
-            padding: 3.5rem 2.5rem;
+        /* Kotak Biodata */
+        .card {
             width: 100%;
-            max-width: 420px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            text-align: center;
+            max-width: 450px;
+            border: 2px solid #000000; /* Garis tepi tegas */
+            padding: 40px;
+            background-color: #ffffff;
+            box-shadow: 8px 8px 0px #000000; /* Bayangan solid ala desain Brutalism */
         }
 
-        .icon-circle {
-            background: rgba(56, 189, 248, 0.1);
-            color: var(--accent-blue);
-            width: 64px;
-            height: 64px;
-            border-radius: 20px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
+        .header {
+            margin-bottom: 30px;
+            border-bottom: 2px solid #000000;
+            padding-bottom: 15px;
         }
 
-        h2 {
+        h1 {
             font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.02em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
-        .instruction {
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            margin-bottom: 2.5rem;
-            line-height: 1.5;
-        }
-
-        /* Tombol Sesuai Permintaan: Teks Tetap "Tampilkan Profil" */
-        .btn-main {
-            background-color: var(--accent-blue);
-            color: var(--bg-deep);
-            border: none;
-            border-radius: 14px;
-            padding: 14px 28px;
-            font-weight: 600;
-            font-size: 0.95rem;
+        /* Tombol */
+        button {
             width: 100%;
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: #000000;
+            color: #ffffff;
+            border: 2px solid #000000;
+            padding: 15px;
+            font-size: 1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            margin-bottom: 10px;
         }
 
-        .btn-main:hover {
-            background-color: #7dd3fc;
-            transform: translateY(-2px);
-            box-shadow: 0 12px 20px -5px rgba(56, 189, 248, 0.3);
+        button:hover {
+            background-color: #ffffff;
+            color: #000000;
         }
 
-        .btn-main:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-        }
-
+        /* Wadah Hasil */
         #hasil-profil {
-            margin-top: 3rem;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            display: none;
-            animation: reveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            display: none; /* Disembunyikan sampai tombol diklik */
+            margin-top: 25px;
         }
 
-        @keyframes reveal {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .info-item {
+        /* Format list biodata */
+        .baris-data {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.25rem;
+            margin-bottom: 15px;
+            font-size: 1.05rem;
         }
-
-        .info-item:last-child { margin-bottom: 0; }
 
         .label {
-            color: var(--text-secondary);
-            font-size: 0.75rem;
+            width: 110px;
+            font-weight: bold;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
         }
 
-        .value {
-            font-size: 1rem;
-            color: var(--text-primary);
+        .nilai {
+            flex: 1;
         }
 
-        .spinner-border {
-            width: 1.1rem;
-            height: 1.1rem;
-            margin-right: 10px;
-            display: none;
-            vertical-align: middle;
+        /* Teks format sebaris (Sesuai instruksi soal) */
+        .format-raw {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px dashed #000000;
+            font-family: monospace;
+            font-size: 0.85rem;
+            color: #444;
         }
     </style>
 </head>
 <body>
 
-<div class="profile-card">
-    <div class="icon-circle">
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" viewBox="0 0 16 16">
-            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
-        </svg>
-    </div>
-
-    <h2>Manajemen Profil</h2>
-    <p class="instruction">Klik tombol di bawah untuk memuat data profil</p>
-
-    <button id="btn-tampil" class="btn-main">
-        <div class="spinner-border spinner-border-sm" role="status"></div>
-        <span>Tampilkan Profil</span>
-    </button>
-
-    <div id="hasil-profil">
-        <div class="info-item">
-            <span class="label">Nama</span>
-            <span id="p-nama" class="value">-</span>
+    <div class="card">
+        <div class="header">
+            <h1>Profil</h1>
         </div>
-        <div class="info-item">
-            <span class="label">Pekerjaan</span>
-            <span id="p-pekerjaan" class="value">-</span>
-        </div>
-        <div class="info-item">
-            <span class="label">Lokasi</span>
-            <span id="p-lokasi" class="value">-</span>
-        </div>
-    </div>
-</div>
 
-<script>
-    const btn = document.getElementById('btn-tampil');
-    const loader = btn.querySelector('.spinner-border');
-    const hasilDiv = document.getElementById('hasil-profil');
-
-    btn.addEventListener('click', function() {
-        btn.disabled = true;
-        loader.style.display = 'inline-block';
+        <button id="btn-tampil">Tampilkan Profil</button>
         
-        fetch('data.php')
-            .then(response => response.json())
-            .then(data => {
-                // Delay kecil untuk estetika loading
-                setTimeout(() => {
-                    document.getElementById('p-nama').innerText = data.nama;
-                    document.getElementById('p-pekerjaan').innerText = data.pekerjaan;
-                    document.getElementById('p-lokasi').innerText = data.lokasi;
+        <div id="hasil-profil"></div>
+    </div>
 
-                    hasilDiv.style.display = 'block';
-                    btn.disabled = false;
-                    loader.style.display = 'none';
-                }, 600);
-            })
-            .catch(error => {
-                alert("Koneksi gagal.");
-                btn.disabled = false;
-                loader.style.display = 'none';
-            });
-    });
-</script>
+    <script>
+        const btnTampil = document.getElementById('btn-tampil');
+        const wadahHasil = document.getElementById('hasil-profil');
 
+        btnTampil.addEventListener('click', function() {
+            btnTampil.innerText = 'MEMUAT DATA...';
+
+            fetch('data.php')
+                .then(response => response.json())
+                .then(data => {
+                    // Tombol diubah teksnya agar tahu sukses
+                    btnTampil.innerText = 'DATA BERHASIL DIMUAT';
+                    btnTampil.style.backgroundColor = '#ffffff';
+                    btnTampil.style.color = '#000000';
+                    btnTampil.disabled = true; // Matikan tombol setelah berhasil
+
+                    // Memasukkan data dengan tampilan list biodata yang rapi
+                    wadahHasil.innerHTML = `
+                        <div class="baris-data">
+                            <div class="label">Nama</div>
+                            <div class="nilai">: ${data.nama}</div>
+                        </div>
+                        <div class="baris-data">
+                            <div class="label">Pekerjaan</div>
+                            <div class="nilai">: ${data.pekerjaan}</div>
+                        </div>
+                        <div class="baris-data">
+                            <div class="label">Lokasi</div>
+                            <div class="nilai">: ${data.lokasi}</div>
+                        </div>
+                        `;
+
+                    // Tampilkan wadah hasil
+                    wadahHasil.style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    btnTampil.innerText = 'GAGAL MEMUAT';
+                });
+        });
+    </script>
 </body>
 </html>
 ```
@@ -278,24 +232,24 @@ echo json_encode($data);
 
 ### 1. PHP (`data.php`)
 
-Bagian ini berfungsi sebagai penyedia data di sisi server. File PHP bertindak sebagai titik akhir (API) yang menyiapkan informasi profil dalam format JSON agar bisa dibaca oleh sistem lain. Kode ini mendefinisikan array asosiatif berisi data seperti nama, pekerjaan, dan lokasi, lalu menggunakan fungsi json_encode() untuk mengubah struktur data tersebut menjadi teks string JSON. Output JSON inilah yang nantinya akan ditangkap oleh logika AJAX di sisi klien.
+Pada sisi server, digunakan file data.php yang berfungsi sebagai penyedia data atau API sederhana. Di sini, data profil disimpan dalam bentuk Array Asosiatif yang kemudian dikonversi menjadi format JSON menggunakan fungsi json_encode(). Penggunaan header Content-Type: application/json sangat penting untuk memastikan bahwa browser menerima dan mengenali data tersebut sebagai objek JSON, bukan sekadar teks biasa, sehingga data dapat diproses lebih lanjut oleh JavaScript.
 
 ---
 
 ### 2. HTML (`index.html`)
 
-HTML berperan sebagai fondasi atau kerangka halaman web yang dilihat oleh pengguna. Struktur ini mendefinisikan elemen-elemen visual seperti kontainer kartu (.card), ikon avatar, judul "Manajemen Profil", dan tombol pemicu interaksi. Di dalamnya juga disiapkan elemen div kosong (seperti #hasil-profil) yang berfungsi sebagai wadah untuk menampung data yang nantinya dikirimkan oleh server. Pemisahan elemen-elemen ini memudahkan JavaScript untuk mengetahui secara presisi di mana data harus diletakkan.
+Struktur halaman web dibangun menggunakan HTML dengan pendekatan minimalis. Komponen utamanya terdiri dari sebuah container berupa card yang berfungsi sebagai pembungkus biodata, sebuah tombol (button) sebagai pemicu event, serta elemen div kosong dengan ID hasil-profil. Elemen kosong inilah yang nantinya akan diisi secara dinamis oleh data yang diambil dari server. Penggunaan ID yang spesifik memudahkan manipulasi DOM (Document Object Model) saat proses integrasi data berlangsung.
 
 ---
 
 ### 3. JavaScript (AJAX)
 
-JavaScript bertindak sebagai "otak" komunikator yang menjalankan teknologi AJAX melalui Fetch API. Skrip ini bekerja di latar belakang sehingga browser dapat berbicara dengan server tanpa perlu memuat ulang (reload) seluruh halaman. Saat tombol diklik, JavaScript menangkap instruksi tersebut, mengubah tampilan tombol menjadi mode pemuatan (loading), dan mengirim permintaan ke file data.php. Setelah mendapat respon JSON, JavaScript memprosesnya dan menyuntikkan data tersebut ke dalam struktur HTML secara dinamis.
+Logika AJAX diimplementasikan menggunakan Fetch API untuk menangani pertukaran data secara asinkron. Ketika tombol diklik, JavaScript akan mengirimkan permintaan (request) ke data.php tanpa memicu pemuatan ulang halaman (reload). Setelah data JSON diterima, JavaScript akan melakukan parsing dan menyusun ulang data tersebut ke dalam struktur HTML baru, lalu menampilkannya ke dalam DOM. Teknik ini membuat pengalaman pengguna menjadi lebih lancar karena transisi data terjadi secara instan di belakang layar.
 
 
 ### 4. CSS
 
-CSS bertanggung jawab atas estetika dan tata letak agar halaman web terlihat profesional dan minimalis. Melalui CSS, kita mengatur palet warna, tipografi, dan spasi antar elemen. CSS juga menangani aspek interaktif seperti efek hover pada tombol dan animasi transisi halus saat data profil muncul di layar. Penggunaan properti seperti Glassmorphism (efek kaca transparan) dan desain responsif memastikan tampilan tetap bagus saat dibuka melalui perangkat komputer maupun ponsel.
+Sisi visual atau CSS menggunakan konsep monokrom dengan skema warna hitam-putih untuk menciptakan kesan profesional dan bersih. Desain ini menerapkan gaya brutalism minimalis yang terlihat dari penggunaan garis tepi (border) yang tegas dan bayangan solid (box-shadow). Pengaturan layout menggunakan Flexbox memastikan posisi kartu biodata selalu berada di tengah layar, sementara properti transition memberikan efek visual yang halus pada tombol saat berinteraksi dengan pengguna.
 
 ---
 
@@ -310,7 +264,7 @@ CSS bertanggung jawab atas estetika dan tata letak agar halaman web terlihat pro
 
 ## 3. Kesimpulan
 
-Kesimpulan dari tugas Modul 10 ini adalah keberhasilan implementasi teknologi AJAX menggunakan Fetch API untuk membangun sistem manajemen profil yang interaktif dan modern. Melalui integrasi antara PHP sebagai penyedia data JSON di sisi server dan JavaScript sebagai pengolah logika di sisi klien, data profil dapat dimuat secara real-time ke dalam kerangka HTML tanpa harus melakukan pemuatan ulang halaman secara keseluruhan. Aspek visual yang dibangun menggunakan CSS dengan konsep Glassmorphism serta tipografi yang bersih memberikan pengalaman pengguna yang responsif, minimalis, dan profesional. Secara keseluruhan, tugas ini mendemonstrasikan bagaimana alur kerja pengembangan web modern menggabungkan struktur data yang efisien, komunikasi latar belakang yang cepat, dan desain antarmuka yang elegan untuk menciptakan aplikasi yang fungsional.
+Implementasi teknologi AJAX dalam praktikum ini menunjukkan bahwa pemisahan antara logika server (PHP) dan antarmuka pengguna (HTML/CSS) dapat menghasilkan aplikasi web yang lebih responsif dan efisien. Dengan memanfaatkan Fetch API, proses pengambilan data dari server dapat dilakukan secara asinkron, yang berarti pengguna tidak perlu menunggu halaman dimuat ulang untuk melihat pembaruan informasi. Secara teknis, kombinasi dari keempat elemen ini (PHP, HTML, JS, dan CSS) merupakan fondasi utama dalam membangun arsitektur aplikasi web modern yang mengutamakan kecepatan dan kenyamanan interaksi pengguna.
 
 ---
 

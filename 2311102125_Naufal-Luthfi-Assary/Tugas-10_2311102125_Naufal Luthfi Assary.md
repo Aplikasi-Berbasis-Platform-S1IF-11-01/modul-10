@@ -98,7 +98,7 @@ Hasil dari kode tersebut adalah data JSON yang dapat dibaca oleh JavaScript di b
 
 7. DOM Manipulation
 
-DOM atau Document Object Model adalah representasi struktur halaman HTML yang dapat diakses dan diubah menggunakan JavaScript. Dalam AJAX, DOM manipulation digunakan untuk menampilkan data hasil response server ke elemen tertentu pada halaman, misalnya ke dalam <div>.
+DOM atau Document Object Model adalah representasi struktur halaman HTML yang dapat diakses dan diubah menggunakan JavaScript. Dalam AJAX, DOM manipulation digunakan untuk menampilkan data hasil response server ke elemen tertentu pada halaman, misalnya ke dalam `<div>.`
 
 Dengan manipulasi DOM, isi halaman dapat diperbarui secara langsung tanpa perlu memuat ulang halaman secara keseluruhan.
 

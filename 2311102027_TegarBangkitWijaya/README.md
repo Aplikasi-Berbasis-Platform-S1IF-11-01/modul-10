@@ -157,7 +157,7 @@ function loadData() {
 Pada saat halaman pertama kali dibuka, pengguna akan melihat tampilan awal aplikasi AJAX yang terdiri dari judul halaman dan tombol **"Tampilkan Profil"**. Pada tahap ini, data profil belum ditampilkan karena belum ada interaksi dari pengguna.
 
 <div align="center">
-<img src="ss-1.jpeg" width="600">
+<![Tampilan Awal](./ss-1.jpeg)
 </div>
 
 ---
@@ -167,5 +167,5 @@ Pada saat halaman pertama kali dibuka, pengguna akan melihat tampilan awal aplik
 Setelah tombol **"Tampilkan Profil"** diklik, aplikasi akan mengambil data dari server (`data.php`) menggunakan **Fetch API** tanpa melakukan reload halaman. Data yang diterima dalam format JSON kemudian ditampilkan ke halaman dalam bentuk daftar profil yang berisi nama, pekerjaan, dan lokasi.
 
 <div align="center">
-<img src="ss-2.jpeg" width="600">
+![Tampilan Setelah](./ss-2.jpeg)>
 </div>

@@ -1,45 +1,35 @@
 <div align="center">
   <br />
-  <img src="assets/Logo Tel-U.png" alt="Logo" width="250">
+  <h1>LAPORAN PRAKTIKUM <br>APLIKASI BERBASIS PLATFORM</h1>
+  <br />
+  <h3>TUGAS MODUL 10 <br> AJAX (Asynchronous JavaScript and XML)</h3>
   <br />
   <br />
-  <h1>LAPORAN PRAKTIKUM<br>APLIKASI BERBASIS PLATFORM</h1>
-  <hr width="50%">
-  <h3>MODUL 9: PHP & AJAX</h3>
+  <img src="assets/Logo Tel-u.png" alt="Logo" width="300"> 
   <br />
-
-  <table style="width: auto;">
-    <tr>
-      <td align="left"><strong>Disusun Oleh</strong></td>
-      <td>:</td>
-      <td align="left">M. Faleno Albar Firjatulloh</td>
-    </tr>
-    <tr>
-      <td align="left"><strong>NIM</strong></td>
-      <td>:</td>
-      <td align="left">2311102297</td>
-    </tr>
-    <tr>
-      <td align="left"><strong>Kelas</strong></td>
-      <td>:</td>
-      <td align="left">S1 IF-11-01</td>
-    </tr>
-    <tr>
-      <td align="left"><strong>Dosen Pengampu</strong></td>
-      <td>:</td>
-      <td align="left">Dimas Fanny Hebrasianto Permadi, S.ST., M.Kom</td>
-    </tr>
-    <tr>
-      <td align="left"><strong>Asisten Praktikum</strong></td>
-      <td>:</td>
-      <td align="left">Apri Pandu Wicaksono & Rangga Pradarrell Fathi</td>
-    </tr>
-  </table>
-
   <br />
-  <h3>LABORATORIUM HIGH PERFORMANCE COMPUTING</h3>
-  <h4>FAKULTAS INFORMATIKA<br>UNIVERSITAS TELKOM PURWOKERTO<br>2026</h4>
   <br />
+  <br />
+  <h3>Disusun Oleh :</h3>
+  <p>
+    <strong>M. Faleno Albar Firjatulloh</strong><br>
+    <strong>2311102297</strong><br>
+    <strong>S1 IF-11-01</strong>
+  </p>
+  <br />
+  <br />
+  <h3>Dosen Pengampu :</h3>
+  <p>
+    <strong>Dimas Fanny Hebrasianto Permadi, S.ST., M.Kom</strong>
+  </p>
+  <br />
+  <br />
+    <h4>Asisten Praktikum :</h4>
+    <strong> Apri Pandu Wicaksono </strong> <br>
+    <strong>Rangga Pradarrell Fathi</strong>
+  <br />
+  <h3>LABORATORIUM HIGH PERFORMANCE
+ <br>FAKULTAS INFORMATIKA <br>UNIVERSITAS TELKOM PURWOKERTO <br>2026</h3>
 </div>
 
 ---

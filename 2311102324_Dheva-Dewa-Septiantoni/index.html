@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil Developer - AJAX</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #ffffff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card-container {
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .card-container:hover {
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 25px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.4);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        button:hover {
+            box-shadow: 0 6px 20px rgba(0, 242, 254, 0.6);
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        #hasil-profil {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-left: 4px solid #00f2fe;
+            border-radius: 8px;
+            font-size: 15px;
+            line-height: 1.6;
+            display: none; 
+            text-align: left;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .error-text {
+            color: #ff6b6b;
+            border-left-color: #ff6b6b !important;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card-container">
+        <h2>Data Karyawan</h2>
+        
+        <button id="btn-tampil">Tampilkan Profil</button>
+
+        <div id="hasil-profil"></div>
+    </div>
+
+    <script>
+        const btnTampil = document.getElementById('btn-tampil');
+        const hasilProfil = document.getElementById('hasil-profil');
+
+        btnTampil.addEventListener('click', function() {
+            
+            // Efek loading pada tombol
+            const originalText = btnTampil.innerHTML;
+            btnTampil.innerHTML = 'Mengambil data...';
+            btnTampil.style.pointerEvents = 'none';
+
+            fetch('data.php')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Terjadi kesalahan pada jaringan/server.');
+                    }
+                    return response.json(); 
+                })
+                .then(data => {
+                    btnTampil.innerHTML = originalText;
+                    btnTampil.style.pointerEvents = 'auto';
+
+                    hasilProfil.innerHTML = '';
+
+                    data.forEach((profil, index) => {
+                        hasilProfil.innerHTML += `
+                            <div style="margin-bottom: 15px; padding-bottom: 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.2);">
+                                <h3 style="font-size: 16px; margin-bottom: 10px; color: #00f2fe;">Karyawan ${index + 1}</h3>
+                                <strong>Nama:</strong> ${profil.nama} <br> 
+                                <strong>Pekerjaan:</strong> ${profil.pekerjaan} <br> 
+                                <strong>Lokasi:</strong> ${profil.lokasi} <br>
+                                <strong>Hobi:</strong> ${profil.hobi.join(', ')}
+                            </div>
+                        `;
+                    });
+
+                    hasilProfil.lastElementChild.style.borderBottom = 'none';
+                    hasilProfil.lastElementChild.style.marginBottom = '0';
+                    hasilProfil.lastElementChild.style.paddingBottom = '0';
+
+                    hasilProfil.classList.remove('error-text');
+                    hasilProfil.style.display = 'block'; 
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    btnTampil.innerHTML = originalText;
+                    btnTampil.style.pointerEvents = 'auto';
+                    
+                    hasilProfil.innerHTML = 'Gagal mengambil data. Pastikan file dijalankan di dalam server lokal (XAMPP/Laragon).';
+                    hasilProfil.classList.add('error-text');
+                    hasilProfil.style.display = 'block';
+                });
+        });
+    </script>
+
+</body>
+</html>

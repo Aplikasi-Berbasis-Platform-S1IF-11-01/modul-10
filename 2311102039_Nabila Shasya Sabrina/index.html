@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Profil Sederhana</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #F0D8A1;
+            color: white;
+            text-align: center;
+            padding-top: 100px;
+        }
+
+        h1 {
+            color: #800000;
+        }
+
+        button {
+            background-color: #800000;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        button:hover {
+            background-color: #a00000;
+        }
+
+        #hasil-profil {
+            margin-top: 30px;
+            font-size: 18px;
+            background-color: #400000;
+            padding: 15px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Profil Pengguna</h1>
+
+    <button onclick="ambilData()">Tampilkan Profil</button>
+
+    <div id="hasil-profil"></div>
+
+    <script>
+        function ambilData() {
+            fetch('data.php')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('hasil-profil').innerHTML =
+                        `Nama: ${data.nama} | Pekerjaan: ${data.pekerjaan} | Lokasi: ${data.lokasi}`;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+
+</body>
+</html>

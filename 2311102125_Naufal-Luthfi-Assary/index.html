@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profil AJAX </title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #e0e7ff, #f8fafc);
+      color: #1e293b;
+      padding: 32px 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .identity {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid #e2e8f0;
+      padding: 14px 18px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      margin-bottom: 24px;
+    }
+
+    .identity h4 {
+      font-size: 16px;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+
+    .identity p {
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      color: #0f172a;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      color: #64748b;
+      font-size: 16px;
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .action-box {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 28px;
+    }
+
+    button {
+      border: none;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      padding: 14px 24px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.25);
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      opacity: 0.96;
+    }
+
+    .summary {
+      display: none;
+      margin-bottom: 24px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 18px;
+      padding: 18px 22px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      border: 1px solid #e2e8f0;
+    }
+
+    .summary strong {
+      color: #1d4ed8;
+    }
+
+    #hasil-profil {
+      min-height: 100px;
+    }
+
+    .placeholder,
+    .loading,
+    .error-message {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 24px;
+      text-align: center;
+      color: #64748b;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    .loading {
+      color: #2563eb;
+      font-weight: bold;
+    }
+
+    .error-message {
+      color: #dc2626;
+      font-weight: bold;
+    }
+
+    .profil-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .profil-card {
+      background: rgba(255, 255, 255, 0.97);
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: 0 15px 35px rgba(15, 23, 42, 0.10);
+      border: 1px solid #e2e8f0;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .profil-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(15, 23, 42, 0.14);
+    }
+
+    .profil-top {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+
+    .avatar {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2563eb, #60a5fa);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .profil-name {
+      font-size: 20px;
+      font-weight: bold;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+
+    .profil-job {
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    .profil-item {
+      margin-bottom: 10px;
+      font-size: 15px;
+      color: #334155;
+      line-height: 1.6;
+    }
+
+    .label {
+      font-weight: bold;
+      color: #1d4ed8;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #dcfce7;
+      color: #166534;
+      font-size: 13px;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .skill-badge {
+      background: #dbeafe;
+      color: #1d4ed8;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 {
+        font-size: 28px;
+      }
+
+      button {
+        width: 100%;
+      }
+
+      .action-box {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="identity">
+      <h4>Nama: Naufal Luthfi Assary</h4>
+      <p>NIM: 2311102125</p>
+    </div>
+
+    <div class="hero">
+      <h1>Profil AJAX </h1>
+      <p>
+        Halaman ini mengambil data profil dari server menggunakan AJAX dengan
+        <code>fetch()</code> dan menampilkannya tanpa reload halaman.
+      </p>
+    </div>
+
+    <div class="action-box">
+      <button id="btnProfil">Tampilkan Profil</button>
+    </div>
+
+    <div class="summary" id="summaryBox"></div>
+
+    <div id="hasil-profil">
+      <div class="placeholder">
+        Klik tombol <strong>Tampilkan Profil</strong> untuk mengambil data dari server.
+      </div>
+    </div>
+  </div>
+
+<script>
+  const tombol = document.getElementById("btnProfil");
+  const hasilProfil = document.getElementById("hasil-profil");
+  const summaryBox = document.getElementById("summaryBox");
+
+  tombol.addEventListener("click", function () {
+    hasilProfil.innerHTML = `<div class="loading">Memuat data profil dari server...</div>`;
+    summaryBox.style.display = "none";
+    summaryBox.innerHTML = "";
+
+    fetch("data.php")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Gagal mengambil data dari server");
+        }
+        return response.json();
+      })
+      .then((result) => {
+        summaryBox.style.display = "block";
+        summaryBox.innerHTML = `
+          <strong>${result.pesan}</strong><br>
+          Total Profil: ${result.jumlah} orang
+        `;
+
+        const cards = result.profil.map((profil) => {
+          const skills = profil.keahlian
+            .map((skill) => `<span class="skill-badge">${skill}</span>`)
+            .join("");
+
+          return `
+            <div class="profil-card">
+              <div class="profil-top">
+                <div class="avatar">${profil.avatar}</div>
+                <div>
+                  <div class="profil-name">${profil.nama}</div>
+                  <div class="profil-job">${profil.pekerjaan}</div>
+                </div>
+              </div>
+
+              <div class="profil-item">
+                <span class="label">Lokasi:</span> ${profil.lokasi}
+              </div>
+
+              <div class="profil-item">
+                <span class="label">Keahlian:</span>
+                <div class="skills">${skills}</div>
+              </div>
+
+              <div class="status">${profil.status}</div>
+            </div>
+          `;
+        }).join("");
+
+        hasilProfil.innerHTML = `<div class="profil-grid">${cards}</div>`;
+      })
+      .catch((error) => {
+        hasilProfil.innerHTML = `<div class="error-message">${error.message}</div>`;
+      });
+  });
+  </script>
+</body>
+</html>

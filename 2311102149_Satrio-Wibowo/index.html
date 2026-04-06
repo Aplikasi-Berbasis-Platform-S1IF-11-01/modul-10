@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas Modul 10 - AJAX 4 Data</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        h2 { color: #2d3748; margin-bottom: 1.5rem; }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            margin-bottom: 2rem;
+        }
+
+        button:hover { background: #764ba2; transform: scale(1.05); }
+
+        /* Styling list hasil */
+        .profil-item {
+            background: #f8fafc;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 5px solid #667eea;
+            text-align: left;
+            font-size: 0.9rem;
+            color: #4a5568;
+            animation: slideIn 0.4s ease forwards;
+            opacity: 0;
+        }
+
+        .highlight { color: #667eea; font-weight: bold; }
+
+        @keyframes slideIn {
+            from { transform: translateY(10px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Daftar Tim Kami</h2>
+        <button id="btn-tampil">Muat Semua Profil</button>
+
+        <div id="hasil-profil">
+            </div>
+    </div>
+
+    <script>
+        document.getElementById('btn-tampil').addEventListener('click', function() {
+            const wadah = document.getElementById('hasil-profil');
+            
+            fetch('data.php')
+                .then(response => response.json())
+                .then(data => {
+                    // Kosongkan wadah sebelum mengisi data baru
+                    wadah.innerHTML = '';
+
+                    // Lakukan perulangan untuk setiap object di dalam array
+                    data.forEach((item, index) => {
+                        // Buat elemen div untuk setiap profil
+                        const div = document.createElement('div');
+                        div.className = 'profil-item';
+                        
+                        // Set delay animasi agar muncul satu per satu
+                        div.style.animationDelay = `${index * 0.1}s`;
+
+                        div.innerHTML = `
+                            Nama: <span class="highlight">${item.nama}</span> | 
+                            Pekerjaan: <span class="highlight">${item.pekerjaan}</span> | 
+                            Lokasi: <span class="highlight">${item.lokasi}</span>
+                        `;
+                        
+                        wadah.appendChild(div);
+                    });
+                })
+                .catch(err => {
+                    wadah.innerHTML = "<p style='color:red;'>Gagal memuat data!</p>";
+                });
+        });
+    </script>
+
+</body>
+</html>
